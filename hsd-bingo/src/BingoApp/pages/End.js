@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Button, Image, Table, Menu, Label} from 'semantic-ui-react';
+import { Header, Button, Image, Table} from 'semantic-ui-react';
 import { Hook, Console, Decode } from 'console-feed'
 
 const Header_function = () => (
