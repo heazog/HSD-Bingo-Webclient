@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Header, Button, Table, Input } from 'semantic-ui-react'
+import { Header, Button, Table, Input, Grid } from 'semantic-ui-react'
 
 class ButtonToggle extends Component {
   state = {}
   handleClick = () =>
     this.setState((prevState) => ({ active: !prevState.active }))
+
 
   render() {
     const { active } = this.state
@@ -18,7 +19,7 @@ class ButtonToggle extends Component {
 }
 
 const TablePlayerLobby = () => (
-  <Table compact celled>
+  <Table unstackable celled>
     <Table.Header>
       <Table.Row>
         <Table.HeaderCell>Spieler</Table.HeaderCell>
@@ -43,16 +44,14 @@ const TablePlayerLobby = () => (
 
     <Table.Footer fullWidth>
       <Table.Row>
-        <Table.HeaderCell />
         <Table.HeaderCell>
           <ButtonToggle>Bereit</ButtonToggle>
         </Table.HeaderCell>
+        <Table.HeaderCell />
       </Table.Row>
     </Table.Footer>
   </Table>
 )
-
-const InputWord = () => <Input placeholder='Wort eingeben...' />
 
 const TableWordsLobby = () => (
   <Table compact celled>
@@ -74,20 +73,55 @@ const TableWordsLobby = () => (
     <Table.Footer fullWidth>
       <Table.Row>
         <Table.HeaderCell>
-          <div>{InputWord()}</div>
+          <Input placeholder='Wort eingeben...' />
         </Table.HeaderCell>
       </Table.Row>
     </Table.Footer>
   </Table>
 )
 
+const GridTables = () => (
+  <Grid divided='vertically'>
+    <Grid.Row columns={2} only='computer'>
+      <Grid.Column>
+        {TablePlayerLobby()}
+      </Grid.Column>
+      <Grid.Column>
+       {TableWordsLobby()}
+      </Grid.Column>
+    </Grid.Row>
+    <Grid.Row columns={1} only='tablet mobile'>
+      <Grid.Column>
+       {TablePlayerLobby()}
+      </Grid.Column>
+    </Grid.Row>
+    <Grid.Row columns={1} only='tablet mobile'>
+      <Grid.Column>
+       {TableWordsLobby()}
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
+)
+
+const GridHeader = () => (
+  <Grid divided='vertically'>
+    <Grid.Row columns={2}>
+      <Grid.Column>
+        <Header as='h1'>Lobby ISE</Header>
+      </Grid.Column>
+      <Grid.Column>
+        <Button color='red' floated='right'>Leave Lobby</Button>
+      </Grid.Column>
+    </Grid.Row>
+  </Grid>
+)
+
 class Lobby extends React.Component {
     render(){
         return (
             <div>
-                <p><Header as='h1'>Lobby ISE</Header></p>
-                <p>{TablePlayerLobby()}</p>
-                <p>{TableWordsLobby()}</p>
+                <p>{GridHeader()}</p>
+                <p>{GridTables()}</p>
             </div>
           );
     }
