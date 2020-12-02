@@ -1,33 +1,47 @@
 import React from 'react';
-import { Header, Button, Image, Table} from 'semantic-ui-react';
-import { Hook, Console, Decode } from 'console-feed'
+import { Header, Button, Image, Table, Grid, Segment} from 'semantic-ui-react';
 
 const Header_function = () => (
     <div>
-        <Table>
-            <Table.Body>
-                <Table.Row>
-                    <Table.Cell><Header as='h1'>HSD BINGO</Header></Table.Cell>
-                    <Table.Cell><Header as='h1'>FACHL</Header></Table.Cell>
-                </Table.Row>
-            </Table.Body>
-        </Table>
+        <Grid columns='equal' divided padded>
+            <Grid.Row color='teal' textAlign='center'>
+                <Grid.Column>
+                    <Segment color='teal' inverted>
+                        <Header as='h2'>HSD-BINGO</Header>
+                    </Segment>
+                </Grid.Column>
+                <Grid.Column>
+                    <Segment color='teal' inverted>
+                        <Header as='h2'>ISE1</Header>
+                    </Segment>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     </div>
   )
 
 const Image_function = () => (
-    <Image src='https://823018.smushcdn.com/1622763/wp-content/uploads/2017/06/Winner.jpg?lossy=1&strip=1&webp=1' size='large' />
+    <Image src='https://823018.smushcdn.com/1622763/wp-content/uploads/2017/06/Winner.jpg?lossy=1&strip=1&webp=1' fluid/>
   )
 
 const Button_function = () => (
     <div>
-      <Button color='teal'>
-        <Header as='h2'>Lobby verlassen</Header>
-      </Button>
-      <Button color='teal'>
-        <Header as='h2'>Spiel verlassen</Header>
-      </Button>
-
+        <Grid>
+            <Grid.Row relaxed columns={2} padded textAlign='center'>
+                <Grid.Column>
+                    <Button color='teal'>
+                        <Header as='h3'>Erneut spielen</Header>
+                    </Button>  
+                </Grid.Column>
+                <Grid.Column>
+                    <Button color='teal'>
+                        <Header as='h3'>Spiel verlassen</Header>
+                    </Button>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+      
+      
     </div>
   )
 
@@ -55,43 +69,30 @@ const Button_function = () => (
   </div>
 )
 
-const Image_Stats_Table = () => (
+const Image_Stats_Grid = () => (
     <div>
-        <Table celled>
-            <Table.Body>
-                <Table.Row>
-                    <Table.Cell>{Image_function()}</Table.Cell>
-                    <Table.Cell>{Stats_function()}</Table.Cell>
-                </Table.Row>
-            </Table.Body>
-        </Table>
+        <Grid columns='equal' padded>
+            <Grid.Row columns={2} padded textAlign='center'>
+                <Grid.Column>
+                    <p>{Image_function()}</p>
+                    
+                </Grid.Column>
+                <Grid.Column>
+                    <p>{Stats_function()}</p>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     </div>
 )
 
 class End extends React.Component {
-    state = {
-        logs: []
-      }
-    
-    componentDidMount() {
-    Hook(window.console, log => {
-        this.setState(({ logs }) => ({ logs: [...logs, Decode(log)] }))
-    })
-
-    console.log('Mani@macbook:/usr/root/ISE/SexiHexi97$ check A4')
-    console.log('Mani@macbook:/usr/root/ISE/SexiHexi97$ check C1')
-    console.log('Mani@macbook:/usr/root/ISE/SexiHexi97$ check D2')
-    console.log('Mani@macbook:/usr/root/ISE/SexiHexi97$ check D3')
-    console.log('Mani@macbook:/usr/root/ISE/SexiHexi97$ leave lobby')
-    }  
 
     render(){
         return (
-            <div style={{ backgroundColor: '#242424' }}>
+            <div>
                 <p>{Header_function()}</p>
-                <p>{Image_Stats_Table()}</p>
+                <p>{Image_Stats_Grid()}</p>
                 <p>{Button_function()}</p>
-                <p><Console logs={this.state.logs} variant="dark" /></p>
             </div>
           );
     }
