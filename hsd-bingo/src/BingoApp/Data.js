@@ -1,6 +1,7 @@
-//import axios from 'axios';
+import axios from 'axios';
 
-const debug = true;
+const debug = false;
+const SERVER = "http://193.170.192.202:8080";
 
 class DataBase{
     async getLobbies(){ throw new Error('getLobbies not implemented!'); }
@@ -16,12 +17,53 @@ class DataBase{
 };
 
 
+
+
 class Data extends DataBase{
     constructor(){
+        super();
         this.winner = "";
         this.user = "";
     }
-    
+    async get(path){
+        var data = [];
+        await axios.get(SERVER + path)
+          .then(function (response) {
+            data = response.data;  
+          })
+          .catch(function (error) {
+            // handle error
+          });
+        return data;
+    }
+    async post(path, postData){
+        var data = [];
+        await axios.post(SERVER + path, postData)
+          .then(function (response) {
+            data = response.data;  
+          })
+          .catch(function (error) {
+            // handle error
+          });
+        return data;
+    }
+    async getLobbies(){  
+        return await this.get("/getlobbies");
+    }
+    async joinLobby(lobby, username){
+        return await this.post("/joinlobby", {"lobby": lobby, "name": username});
+    }
+    async getPlayers(lobby){ 
+        return await this.post("/joinlobby", {"lobby": lobby, "name": username});
+    }
+    async getLobbyStatus(lobby){ throw new Error('getLobbyStatus not implemented!'); }
+    async start(userID){ throw new Error('start not implemented!'); }
+    async getBoard(userID){ throw new Error('getBoard not implemented!'); }
+    async makeSelection(userID, x, y){ throw new Error('makeSelection not implemented!'); }
+    async bingo(userID){ throw new Error('bingo not implemented!'); }
+    getWinner(){ throw new Error('bingo not implemented!'); }
+    getUser(){ throw new Error('bingo not implemented!'); }
+
 }
 
 function sleep(ms) {
@@ -52,7 +94,8 @@ class DataDummy extends DataBase{
             }
         ];
     }
-    async getPlayers(lobby){
+    async getPlayers(){
+        //lobby
         await sleep(1000);
         return [
             {
@@ -67,17 +110,20 @@ class DataDummy extends DataBase{
             }
         ];
     }
-    async getLobbyStatus(lobby){
+    async getLobbyStatus(){
+        //lobby
         await sleep(1000);
         return {
             "gametime": "34"
         };
     }
-    async start(userID){
+    async start(){
+        //userID
         await sleep(1000);
         return null;
     }
-    async getBoard(userID){
+    async getBoard(){
+        //userID
         await sleep(1000);
         return [
             [
@@ -117,11 +163,13 @@ class DataDummy extends DataBase{
             ]
         ];
     }
-    async makeSelection(userID, x, y){
+    async makeSelection(x, y){
+        //userID
         await sleep(1000);
         return null;
     }
-    async bingo(userID){
+    async bingo(){
+        //userID
         await sleep(1000);
         return {
             "winner": null
@@ -138,6 +186,10 @@ class DataDummy extends DataBase{
             id: 3, 
             master: false
         };
+    }
+
+    getLobby(){
+        return "ISE1";
     }
 
 }
