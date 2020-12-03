@@ -7,6 +7,7 @@ class Lobby extends Component {
     super(props);
 
     this.state = {
+      lobby: "ISE",
       name: "",
       id: "",
       master: false,
@@ -21,8 +22,9 @@ class Lobby extends Component {
     this.printReady = this.printReady.bind(this);
     this.printOwnName = this.printOwnName.bind(this);
 
-    setInterval(this.loadPlayers(), 500);
+    setInterval(this.loadPlayers(), 1000000);
     this.loadUser();
+    this.loadLobby();
   }
 
   async loadPlayers(){
@@ -43,6 +45,16 @@ class Lobby extends Component {
     }else{
         this.setState({name: user.name, master: user.master, error: false});
     }
+  }
+
+  async loadLobby(){/*
+    let lobby = await MyData.getLobby();
+
+    if(lobby === null){
+        this.setState({error: true})
+    }else{
+        this.setState({lobby: lobby, error: false});
+    }*/
   }
   
 
@@ -68,7 +80,7 @@ class Lobby extends Component {
     </Grid>
   )
   printOwnName(){
-    if(this.state.master == true) {
+    if(this.state.master === true) {
           return(
             this.GridMaster()
           )
@@ -80,7 +92,7 @@ class Lobby extends Component {
   }
 
   printReady(state){
-    if(state == true) {
+    if(state === true) {
           return(
             <Icon color="green" name = "thumbs up outline" />
           )
@@ -107,7 +119,7 @@ class Lobby extends Component {
         </Table.Row>
 
         {this.state.players.map((player) => {
-          var status = player.status == "ready";
+          var status = player.status === "ready";
             return (
             <Table.Row>
               <Table.Cell>{player.name}</Table.Cell>
