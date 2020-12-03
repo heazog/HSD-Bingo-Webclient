@@ -12,49 +12,10 @@ code {
     monospace;
 }
 
-
-.page-heading{
-  text-align: center;
-}
-
-.board{
-  border: 1px lightgrey solid;
-  border-radius: 1px;
-}
-
-.board-row{
-  padding: 0 !important;
-}
-
 .board-column{
-  background-color: #4db6ac;
   padding: 5px !important;
   text-align: center;
-  vertical-align: middle;
   border: 1px lightgrey solid;
-/*align-content: center !important;
-}
-
-.board-field{
-  /*height: inherit;
-    padding: 5px;
-    align-self: center !important;*/
-
-  /*text-align: center;
-  background-color: lightblue;
-  color: white;*/
   word-wrap: break-word;
-
 }
 
-.game-message-container{
-
-}
-
-.game-buttons-container{
-
- }
-
-.game-button{
-  margin: 5px !important;
-}

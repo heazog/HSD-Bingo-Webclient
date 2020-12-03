@@ -70,35 +70,14 @@ class DataDummy extends DataBase{
     }
     getBoard(userID){
         return [
-            "wort11",
-            "wort12",
-            "wort13",
-            "wort14",
-            "wort15",
-            "wort21",
-            "wort22",
-            "wort23",
-            "wort24",
-            "wort25",
-            "wort31",
-            "wort32",
-            "wort33",
-            "wort34",
-            "wort35",
-            "wort41",
-            "wort42",
-            "wort43",
-            "wort44",
-            "wort45",
-            "wort51",
-            "wort52",
-            "wort53",
-            "wort54",
-            "wort55"
-        ];
+            ["wort11","wort12","wort13","wort14","wort15"],
+            ["wort21","Fass ma dass nochmal zusammen","wort23","wort24","wort25"],
+            ["wort31","wort32","wort33","wort34","wort35"],
+            ["wort41","wort42","wort43","wort44","wort45"],
+            ["wort51","wort52","wort53","wort54","wort55"]];
     }
     makeSelection(userID, x, y){
-        return null;
+        return true;
     }
     bingo(userID){
         return {

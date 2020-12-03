@@ -4,26 +4,24 @@ import MyData from '../Data.js'
 
 
 //TODO: Columns vertikal centern (frag den Herzog)
-
+const checkInterval = 1000;
 
 function Field(props) {
     return (
-        <Grid.Column className="board-column" onClick={props.onClick}>
+        <Grid.Column className="board-column" color={props.color} onClick={props.onClick}>
             {props.value}
         </Grid.Column>
     );
 }
 
-class FieldA extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            text: props.text,
-            active: true,
-            x:props.x,
-            y:props.y,
-        };
+function checkBingo(){
+    if(MyData.bingo() != null){
+        //Gewinnername speichern
+        /*if(MyData.bingo() == MyData.getUsername()) {
+            //Gewinnerbildschirm
+        }else{
+            //Verliererbildschirm
+        }*/
     }
 }
 
@@ -31,69 +29,86 @@ class Game extends React.Component {
     constructor(props) {
         super(props);
 
-        const fields = 1;
-
         this.state = {
             squares: MyData.getBoard(),
-            fields: fields,
+            fields: [],
+            active: [],
             xIsNext: true,
         };
+
+        setInterval(function(){ checkBingo(); }, checkInterval);
     }
 
-    handleClick(i) {
-        const squares = this.state.squares.slice();
+    handleClick(x,y) {
+        const active = this.state.active.slice();
 
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        //Request senden
+        if(MyData.makeSelection(12345,x,y)){
+            active[x][y] = true;
+        }
+
         this.setState({
-            squares: "squares",
-            xIsNext: !this.state.xIsNext,
+            active : active,
         });
     }
 
-    renderField(i) {
+    renderField(x,y) {
+        for(let y=0; y< this.state.squares.length; y++) {
+            let temp = [];
+            for(let x=0; x< this.state.squares[0].length; x++) {
+                temp.push(new FieldA("Test"));
+            }
+            this.state.fields.push(temp);
+        }
+
+        for(let y=0; y< this.state.squares.length; y++) {
+            let temp = [];
+            for(let x=0; x< this.state.squares[0].length; x++) {
+                temp.push(false);
+            }
+            this.state.active.push(temp);
+        }
+
         return (
             <Field
-                value={this.state.squares[i]}
-                onClick={() => this.handleClick(i)}
+                value={this.state.squares[x][y]}
+                onClick={() => this.handleClick(x,y)}
+                color={this.state.active[x][y] ? "red": "teal"}
             />
         );
     }
-
 
     render(){
         return (
             <div className="game">
                 <h1 align="center" >ISE1</h1>
 
-                <Grid columns='equal' columns={5}>
-
-                    {this.renderField(0)}
-                    {this.renderField(1)}
-                    {this.renderField(2)}
-                    {this.renderField(3)}
-                    {this.renderField(4)}
-                    {this.renderField(5)}
-                    {this.renderField(6)}
-                    {this.renderField(7)}
-                    {this.renderField(8)}
-                    {this.renderField(9)}
-                    {this.renderField(10)}
-                    {this.renderField(11)}
-                    {this.renderField(12)}
-                    {this.renderField(13)}
-                    {this.renderField(14)}
-                    {this.renderField(15)}
-                    {this.renderField(16)}
-                    {this.renderField(17)}
-                    {this.renderField(18)}
-                    {this.renderField(19)}
-                    {this.renderField(20)}
-                    {this.renderField(21)}
-                    {this.renderField(22)}
-                    {this.renderField(23)}
-                    {this.renderField(24)}
-
-
+                <Grid columns={5}>
+                    {this.renderField(0,0)}
+                    {this.renderField(1,0)}
+                    {this.renderField(2,0)}
+                    {this.renderField(3,0)}
+                    {this.renderField(4,0)}
+                    {this.renderField(0,1)}
+                    {this.renderField(1,1)}
+                    {this.renderField(2,1)}
+                    {this.renderField(3,1)}
+                    {this.renderField(4,1)}
+                    {this.renderField(0,2)}
+                    {this.renderField(1,2)}
+                    {this.renderField(2,2)}
+                    {this.renderField(3,2)}
+                    {this.renderField(4,2)}
+                    {this.renderField(0,3)}
+                    {this.renderField(1,3)}
+                    {this.renderField(2,3)}
+                    {this.renderField(3,3)}
+                    {this.renderField(4,3)}
+                    {this.renderField(0,4)}
+                    {this.renderField(1,4)}
+                    {this.renderField(2,4)}
+                    {this.renderField(3,4)}
+                    {this.renderField(4,4)}
                 </Grid>
 
 
@@ -104,13 +119,12 @@ class Game extends React.Component {
                                 <div className="header">
                                     Neuer Begriff
                                 </div>
-                                <p>Minuten Pause</p>
+                                <p>Machma 5 Minuten Pause</p>
                             </div>
                         </div>
                         <div className="eight wide column center aligned">
                             <div className="game-buttons-container">
-                                <button className="ui button game-button">Schließen</button>
-                                <button className="ui button game-button">Ablehnen</button>
+                                <button className="ui button">Ablehnen</button>
                             </div>
                         </div>
                     </div>

@@ -3,7 +3,9 @@ import Game from './Game';
 
 test('renders learn react link', () => {
   render(<Game />);
-  const linkElement = screen.getByText(/Game/i);
-  expect(linkElement).toBeInTheDocument();
+  const heading = screen.getByText(/ISE1/i);
+  expect(heading).toBeInTheDocument();
+
+
 });
 
