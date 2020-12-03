@@ -11,3 +11,48 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.page-heading{
+  text-align: center;
+}
+
+.board{
+  border: 1px lightgrey solid;
+  border-radius: 1px;
+}
+
+.board-row{
+  padding: 0 !important;
+}
+
+.board-column{
+  background-color: #4db6ac;
+  border: 1px lightgrey solid;
+  padding: 0 !important;
+  align-content: center !important;
+    /*middle aligned */
+}
+
+.board-field{
+  height: inherit;
+  padding: 5px;
+  /*background-color: lightblue;*/
+  text-align: center;
+  align-self: center !important;
+  word-wrap: break-word;
+  color: white;
+}
+
+.game-message-container{
+  display: inline-block;
+}
+
+.game-buttons-container{
+  display: inline-block;
+ }
+
+.game-button{
+  margin: 5px !important;
+}
+/*<button className="ui button game-button">Schließen</button>*/
