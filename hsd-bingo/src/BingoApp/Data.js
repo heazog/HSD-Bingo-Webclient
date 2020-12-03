@@ -3,20 +3,25 @@
 const debug = true;
 
 class DataBase{
-
-  getLobbies(){ throw new Error('getLobbies not implemented!'); }
-  joinLobby(lobby, username){ throw new Error('joinLobby not implemented!'); }
-  getPlayers(lobby){ throw new Error('getPlayers not implemented!'); }
-  getLobbyStatus(lobby){ throw new Error('getLobbyStatus not implemented!'); }
-  start(userID){ throw new Error('start not implemented!'); }
-  getBoard(userID){ throw new Error('getBoard not implemented!'); }
-  makeSelection(userID, x, y){ throw new Error('makeSelection not implemented!'); }
-  bingo(userID){ throw new Error('bingo not implemented!'); }
+    async getLobbies(){ throw new Error('getLobbies not implemented!'); }
+    async joinLobby(lobby, username){ throw new Error('joinLobby not implemented!'); }
+    async getPlayers(lobby){ throw new Error('getPlayers not implemented!'); }
+    async getLobbyStatus(lobby){ throw new Error('getLobbyStatus not implemented!'); }
+    async start(userID){ throw new Error('start not implemented!'); }
+    async getBoard(userID){ throw new Error('getBoard not implemented!'); }
+    async makeSelection(userID, x, y){ throw new Error('makeSelection not implemented!'); }
+    async bingo(userID){ throw new Error('bingo not implemented!'); }
+    getWinner(){ throw new Error('bingo not implemented!'); }
+    getUser(){ throw new Error('bingo not implemented!'); }
 };
 
 
 class Data extends DataBase{
-
+    constructor(){
+        this.winner = "";
+        this.user = "";
+    }
+    
 }
 
 function sleep(ms) {
@@ -25,7 +30,7 @@ function sleep(ms) {
 
 class DataDummy extends DataBase{
     async getLobbies(){  
-        await sleep(2000);
+        await sleep(1000);
         return [
             {
                 "name": "LVA"+Math.round(Math.random()*10).toString(),
@@ -38,7 +43,8 @@ class DataDummy extends DataBase{
         ];
     }
 
-    joinLobby(lobby, username){
+    async joinLobby(lobby, username){
+        await sleep(1000);
         return [
             {
                 "UID": 3,
@@ -46,7 +52,8 @@ class DataDummy extends DataBase{
             }
         ];
     }
-    getPlayers(lobby){
+    async getPlayers(lobby){
+        await sleep(1000);
         return [
             {
                 "name": "Player1",
@@ -60,51 +67,79 @@ class DataDummy extends DataBase{
             }
         ];
     }
-    getLobbyStatus(lobby){
+    async getLobbyStatus(lobby){
+        await sleep(1000);
         return {
             "gametime": "34"
         };
     }
-    start(userID){
+    async start(userID){
+        await sleep(1000);
         return null;
     }
-    getBoard(userID){
+    async getBoard(userID){
+        await sleep(1000);
         return [
-            "wort11",
-            "wort12",
-            "wort13",
-            "wort14",
-            "wort15",
-            "wort21",
-            "wort22",
-            "wort23",
-            "wort24",
-            "wort25",
-            "wort31",
-            "wort32",
-            "wort33",
-            "wort34",
-            "wort35",
-            "wort41",
-            "wort42",
-            "wort43",
-            "wort44",
-            "wort45",
-            "wort51",
-            "wort52",
-            "wort53",
-            "wort54",
-            "wort55"
+            [
+                "wort11",
+                "wort12",
+                "wort13",
+                "wort14",
+                "wort15"
+            ],
+            [
+                "wort21",
+                "wort22",
+                "wort23",
+                "wort24",
+                "wort25"
+            ],
+            [
+                "wort31",
+                "wort32",
+                "wort33",
+                "wort34",
+                "wort35"
+            ],
+            [
+                "wort41",
+                "wort42",
+                "wort43",
+                "wort44",
+                "wort45"
+            ],
+            [
+                "wort51",
+                "wort52",
+                "wort53",
+                "wort54",
+                "wort55"
+            ]
         ];
     }
-    makeSelection(userID, x, y){
+    async makeSelection(userID, x, y){
+        await sleep(1000);
         return null;
     }
-    bingo(userID){
+    async bingo(userID){
+        await sleep(1000);
         return {
             "winner": null
         }
     }
+
+    getWinner(){
+        return "Max";
+    }
+
+    getUser(){
+        return {
+            name: "Ich", 
+            id: 3, 
+            master: false
+        };
+    }
+
 }
 
 

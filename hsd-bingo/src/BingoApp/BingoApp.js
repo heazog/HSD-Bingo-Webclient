@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Divider, Header, Icon, Button } from 'semantic-ui-react';
+import { Container, Divider, Header, Icon, Button, Image } from 'semantic-ui-react';
 import Start from './pages/Start'
 import Lobby from './pages/Lobby'
 import Game from './pages/Game'
@@ -20,6 +20,8 @@ class App extends React.Component {
         };
 
         this.loadLobbies = this.loadLobbies.bind(this);
+        this.timer = this.timer.bind(this);
+        setInterval(this.timer, 500);
       }
     
 
@@ -33,7 +35,12 @@ class App extends React.Component {
         }
     }
 
+    timer(){
+        this.loadLobbies();
+    }
+
     render(){
+
         return (
             <Container className="BingoApp">
                 <h1>Hallo!</h1>
