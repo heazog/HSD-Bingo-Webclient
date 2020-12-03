@@ -28,31 +28,33 @@ code {
 
 .board-column{
   background-color: #4db6ac;
+  padding: 5px !important;
+  text-align: center;
+  vertical-align: middle;
   border: 1px lightgrey solid;
-  padding: 0 !important;
-  align-content: center !important;
-    /*middle aligned */
+/*align-content: center !important;
 }
 
 .board-field{
-  height: inherit;
-  padding: 5px;
-  /*background-color: lightblue;*/
-  text-align: center;
-  align-self: center !important;
+  /*height: inherit;
+    padding: 5px;
+    align-self: center !important;*/
+
+  /*text-align: center;
+  background-color: lightblue;
+  color: white;*/
   word-wrap: break-word;
-  color: white;
+
 }
 
 .game-message-container{
-  display: inline-block;
+
 }
 
 .game-buttons-container{
-  display: inline-block;
+
  }
 
 .game-button{
   margin: 5px !important;
 }
-/*<button className="ui button game-button">Schließen</button>*/
