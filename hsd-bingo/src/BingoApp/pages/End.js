@@ -1,5 +1,21 @@
 import React from 'react';
+import data from '../Data';
 import { Header, Button, Image, Table, Grid, Segment, Divider, Form, Label} from 'semantic-ui-react';
+
+/* CONSTANTS */
+const winner_links = [  'https://media2.giphy.com/media/l4hLwMmFVBOAKF3EI/giphy.gif',
+                        'https://media2.giphy.com/media/3o7TKF5DnsSLv4zVBu/giphy.gif',
+                        'https://media4.giphy.com/media/9xt1MUZqkneFiWrAAD/giphy.gif?cid=ecf05e47ok4e9gf3hr29te6xlp38lrdt3rmaw9ykmjfq6f1u&rid=giphy.gif'
+]
+
+const loser_links = [   'https://media2.giphy.com/media/mcH0upG1TeEak/giphy.gif',
+                        'https://media3.giphy.com/media/suCJQGchI6oBW/giphy.gif',
+                        'https://media4.giphy.com/media/rKj0oXtnMQNwY/giphy.gif',
+                        'https://media2.giphy.com/media/IhL8sICowZWmI/giphy.gif',
+                        'https://media3.giphy.com/media/WrNfErHio7ZAc/giphy.gif?cid=ecf05e47ahzzaw2emt1fm7yndu4bk57sehu6kj54pv29gq1d&rid=giphy.gif'
+]
+
+/**+*********************************************************************************/
 
 const Header_function = () => (
     <div>
@@ -20,9 +36,156 @@ const Header_function = () => (
     </div>
   )
 
-const Image_function = () => (
-    <Image src='https://823018.smushcdn.com/1622763/wp-content/uploads/2017/06/Winner.jpg?lossy=1&strip=1&webp=1' fluid/>
-  )
+const Image_function_winner = () => (
+    <div>
+        <Image src={winner_links[Math.floor(Math.random()*winner_links.length)]} fluid />
+    </div>
+)
+
+const Image_function_loser = () => (
+    <div>
+        <Image src={loser_links[Math.floor(Math.random()*loser_links.length)]}fluid />
+    </div>
+)
+
+const Stats_best_list = () => (
+    <div>
+        <Table color={'teal'} key={'teal'} inverted>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>Ewige Bestenliste</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+                <Table.Row>
+                    <Table.Cell>1. Reiter Misch</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.Cell>2. Fronz Sepp</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.Cell>3. Philip Mustang</Table.Cell>        
+                </Table.Row>
+            </Table.Body>
+    </Table>
+    </div>
+)
+
+const Stats_fastest_games = () => (
+    <div>
+        <Table color={'teal'} key={'teal'} inverted>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>Schnellsten Spiele</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+                <Table.Row>
+                    <Table.Cell>ISE1: 00:04:23</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.Cell>DNÜ1: 59:59:59</Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                    <Table.Cell>RTO1: 01:47:11</Table.Cell>        
+                </Table.Row>
+            </Table.Body>
+    </Table>
+    </div>
+)
+  
+
+const Image_Stats_Grid_winner = () => (
+    <div>
+        <Grid divided='vertically' padded>
+            <Grid.Row columns={2} padded textAlign='center' only='computer'>
+                <Grid.Column>
+                    <p>{Image_function_winner()}</p>
+                    <p>{WinnerLable()}</p>
+                </Grid.Column>
+                <Grid.Column>
+                    <p>{Stats_best_list()}</p>
+                    <p>{Stats_fastest_games()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Image_function_winner()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{WinnerLable()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Stats_best_list()}</p>  
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Stats_fastest_games()}</p>  
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    </div>
+)
+
+const Image_Stats_Grid_loser = () => (
+    <div>
+        <Grid divided='vertically' padded>
+            <Grid.Row columns={2} padded textAlign='center' only='computer'>
+                <Grid.Column>
+                    <p>{Image_function_loser()}</p>
+                    <p>{WinnerLable()}</p>
+                </Grid.Column>
+                <Grid.Column>
+                    <p>{Stats_best_list()}</p>
+                    <p>{Stats_fastest_games()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Image_function_loser()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{WinnerLable()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Stats_best_list()}</p>  
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Stats_fastest_games()}</p>  
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    </div>
+)
+
+const WinnerLable = () => (
+    <Form>
+      <Form.Field>
+        <input type='text' placeholder='Winner Name' />
+      </Form.Field>
+    </Form>
+)
 
 const Button_function = () => (
     <div>
@@ -39,89 +202,37 @@ const Button_function = () => (
                     </Button>
                 </Grid.Column>
             </Grid.Row>
-        </Grid>
-      
-      
+        </Grid>  
     </div>
   )
 
- const Stats_function = () => (
-    <div>
-        <Table color={'teal'} key={'teal'} inverted>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>Spielstatistik</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
+/**+*********************************************************************************/
 
-            <Table.Body>
-                <Table.Row>
-                    <Table.Cell>Beste Reihe in #208 (alle Teilnehmer)</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>(Unterschiedliche) gezogene Zahlen in #208</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>Meine Reihen in #208</Table.Cell>        
-                </Table.Row>
-            </Table.Body>
-    </Table>
-  </div>
-)
-
-const WinnerLable = () => (
-    <Form>
-      <Form.Field>
-        <input type='text' placeholder='Winner Name' />
-      </Form.Field>
-    </Form>
-)
-  
-
-const Image_Stats_Grid = () => (
-    <div>
-        <Grid divided='vertically' padded>
-            <Grid.Row columns={2} padded textAlign='center' only='computer'>
-                <Grid.Column>
-                    <p>{Image_function()}</p>
-                    <p>{WinnerLable()}</p>
-                </Grid.Column>
-                <Grid.Column>
-                    <p>{Stats_function()}</p>
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    <p>{Image_function()}</p>
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    <p>{WinnerLable()}</p>
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    <p>{Stats_function()}</p>  
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    </div>
-)
-
-class End extends React.Component {
-
+class End extends React.Component 
+{
     render(){
+        /*WINNER*/
+        if(true)
+        {
+            return (
+                <div>
+                    <p>{Header_function()}</p>
+                    <p>{Image_Stats_Grid_winner()}</p>
+                    <p>{Button_function()}</p>
+                </div>
+                );
+        }
+        /*LOSER*/
+        else
+        {
         return (
             <div>
                 <p>{Header_function()}</p>
-                <p>{Image_Stats_Grid()}</p>
+                <p>{Image_Stats_Grid_loser()}</p>
                 <p>{Button_function()}</p>
             </div>
-          );
+            );
+        }
     }
 }
 export default End;
