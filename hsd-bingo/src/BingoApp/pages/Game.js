@@ -31,7 +31,6 @@ class Game extends React.Component {
 
         this.state = {
             squares: MyData.getBoard(),
-            fields: [],
             active: [],
             xIsNext: true,
         };
@@ -53,13 +52,7 @@ class Game extends React.Component {
     }
 
     renderField(x,y) {
-        for(let y=0; y< this.state.squares.length; y++) {
-            let temp = [];
-            for(let x=0; x< this.state.squares[0].length; x++) {
-                temp.push(new FieldA("Test"));
-            }
-            this.state.fields.push(temp);
-        }
+
 
         for(let y=0; y< this.state.squares.length; y++) {
             let temp = [];
