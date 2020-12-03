@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Button, Image, Table, Grid, Segment} from 'semantic-ui-react';
+import { Header, Button, Image, Table, Grid, Segment, Divider, Form, Label} from 'semantic-ui-react';
 
 const Header_function = () => (
     <div>
@@ -7,12 +7,12 @@ const Header_function = () => (
             <Grid.Row color='teal' textAlign='center'>
                 <Grid.Column>
                     <Segment color='teal' inverted>
-                        <Header as='h2'>HSD-BINGO</Header>
+                        <Header as='h3'>HSD-BINGO</Header>
                     </Segment>
                 </Grid.Column>
                 <Grid.Column>
                     <Segment color='teal' inverted>
-                        <Header as='h2'>ISE1</Header>
+                        <Header as='h3'>ISE1</Header>
                     </Segment>
                 </Grid.Column>
             </Grid.Row>
@@ -30,12 +30,12 @@ const Button_function = () => (
             <Grid.Row relaxed columns={2} padded textAlign='center'>
                 <Grid.Column>
                     <Button color='teal'>
-                        <Header as='h3'>Erneut spielen</Header>
+                        <Header as='h4'>Erneut spielen</Header>
                     </Button>  
                 </Grid.Column>
                 <Grid.Column>
                     <Button color='teal'>
-                        <Header as='h3'>Spiel verlassen</Header>
+                        <Header as='h4'>Spiel verlassen</Header>
                     </Button>
                 </Grid.Column>
             </Grid.Row>
@@ -69,16 +69,43 @@ const Button_function = () => (
   </div>
 )
 
+const WinnerLable = () => (
+    <Form>
+      <Form.Field>
+        <input type='text' placeholder='Winner Name' />
+      </Form.Field>
+    </Form>
+)
+  
+
 const Image_Stats_Grid = () => (
     <div>
-        <Grid columns='equal' padded>
-            <Grid.Row columns={2} padded textAlign='center'>
+        <Grid divided='vertically' padded>
+            <Grid.Row columns={2} padded textAlign='center' only='computer'>
                 <Grid.Column>
                     <p>{Image_function()}</p>
-                    
+                    <p>{WinnerLable()}</p>
                 </Grid.Column>
                 <Grid.Column>
                     <p>{Stats_function()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Image_function()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{WinnerLable()}</p>
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Stats_function()}</p>  
                 </Grid.Column>
             </Grid.Row>
         </Grid>
