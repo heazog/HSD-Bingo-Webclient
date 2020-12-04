@@ -1,6 +1,7 @@
 import React from 'react';
 import data from '../Data';
-import { Header, Button, Image, Table, Grid, Segment, Divider, Form, Label} from 'semantic-ui-react';
+//import { Divider, Label} from 'semantic-ui-react'; nicht verwendete Objekte auskommentieren oder löschen
+import { Header, Button, Image, Table, Grid, Segment, Form} from 'semantic-ui-react';
 
 /* CONSTANTS */
 const winner_links = [  'https://media2.giphy.com/media/l4hLwMmFVBOAKF3EI/giphy.gif',
@@ -120,38 +121,38 @@ const Stats_fastest_games = () => (
 const Grid_winner = () => (
     <div>
         <Grid padded>
-            <Grid.Row columns={2} padded textAlign='center' only='computer'>
+            <Grid.Row columns={2} textAlign='center' only='computer'> {/* padded is bei Row ned erlaubt */}
                 <Grid.Column>
-                    <p>{Image_function_winner()}</p>
-                    <p>{WinnerLable()}</p>
+                    {Image_function_winner()}
+                    {WinnerLable()}
                 </Grid.Column>
                 <Grid.Column>
-                    <p>{Stats_best_list()}</p>
-                    <p>{Stats_fastest_games()}</p>
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    <p>{Image_function_winner()}</p>
+                    {Stats_best_list()}
+                    {Stats_fastest_games()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    <p>{WinnerLable()}</p>
+                    {Image_function_winner()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    <p>{Stats_best_list()}</p>  
+                    {WinnerLable()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    <p>{Stats_fastest_games()}</p>  
+                    {Stats_best_list()}  
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    {Stats_fastest_games()}  
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -161,45 +162,45 @@ const Grid_winner = () => (
 const Grid_loser = () => (
     <div>
         <Grid padded>
-            <Grid.Row columns={2} padded textAlign='center' only='computer'>
+            <Grid.Row columns={2} textAlign='center' only='computer'>
                 <Grid.Column>
-                    <p>{Image_function_loser()}</p>
-                    <p>{WinnerLable()}</p>
-                    <p>{Button_function()}</p> 
+                    {Image_function_loser()}
+                    {WinnerLable()}
+                    {Button_function()} 
                 </Grid.Column>
                 <Grid.Column>
-                    <p>{Stats_best_list()}</p>
-                    <p>{Stats_fastest_games()}</p>
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    <p>{Image_function_loser()}</p>
+                    {Stats_best_list()}
+                    {Stats_fastest_games()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    <p>{WinnerLable()}</p>
+                    {Image_function_loser()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    <p>{Stats_best_list()}</p>  
+                    {WinnerLable()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    <p>{Stats_fastest_games()}</p>  
+                    {Stats_best_list()}  
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    <p>{Button_function()}</p>  
+                    {Stats_fastest_games()}  
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    {Button_function()}  
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -217,7 +218,7 @@ const WinnerLable = () => (
 const Button_function = () => (
     <div>
         <Grid>
-            <Grid.Row relaxed columns={2} padded textAlign='center'>
+            <Grid.Row columns={2} textAlign='center'>{/* relaxed & padded is bei Row ungültig - gehört des ins <Grid>?*/}
                 <Grid.Column>
                     <Button positive>
                         Erneut spielen
@@ -265,8 +266,8 @@ class End extends React.Component
         {
             return (
                 <div>
-                    <p>{Header_function()}</p>
-                    <p>{Grid_winner()}</p>
+                    {Header_function() /* h3, form usw. darf ned innerhalb von <p> sein, hab jetzt alle entfernt - vielleicht war des zu viel, aber bitte zukünfig auf die warnings achten :)*/}
+                    {Grid_winner()}
                 </div>
                 );
         }
@@ -275,8 +276,8 @@ class End extends React.Component
         {
             return (
                 <div>
-                    <p>{Header_function()}</p>
-                    <p>{Grid_loser()}</p>
+                    {Header_function()}
+                    {Grid_loser()}
                 </div>
                 );
             }

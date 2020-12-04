@@ -106,7 +106,7 @@ class Game extends React.Component {
 
 
                 <div className="ui message floating">
-                    <div class="ui equal width grid">
+                    <div className="ui equal width grid">{/* ein class hast übersehen :D */}
                         <div className="eight wide column">
                             <div className="game-message-container">
                                 <div className="header">

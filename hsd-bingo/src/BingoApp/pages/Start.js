@@ -13,9 +13,9 @@ const SemesterOptions = [
 ]
 
 var SubjectOptions = [
-    {text: 'DIG1'},
-    {text: 'SEN1'},
-    {text: 'CEC1'},
+    {key: 'DIG1', text: 'DIG1'}, // Sowas braucht immer ein Key -> sonst warning
+    {key: 'SEN1', text: 'SEN1'},
+    {key: 'CEC1', text: 'CEC1'},
 ]
 
 class Headline extends React.Component {

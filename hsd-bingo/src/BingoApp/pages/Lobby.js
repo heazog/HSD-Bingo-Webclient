@@ -120,8 +120,8 @@ class Lobby extends React.Component {
     render(){
         return (
             <div>
-                <p>{GridHeader()}</p>
-                <p>{GridTables()}</p>
+                {GridHeader() /* H1 innerhalb von <p></p> is verboten :D */}
+                {GridTables()}
             </div>
           );
     }
