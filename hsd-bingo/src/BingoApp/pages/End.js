@@ -50,7 +50,7 @@ const Image_function_loser = () => (
 
 const Stats_best_list = () => (
     <div>
-        <Table color={'teal'} key={'teal'} inverted>
+        <Table color={'teal'} key={'teal'}>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Ewige Bestenliste</Table.HeaderCell>
@@ -61,20 +61,30 @@ const Stats_best_list = () => (
                 <Table.Row>
                     <Table.Cell>1. Reiter Misch</Table.Cell>
                 </Table.Row>
+
                 <Table.Row>
                     <Table.Cell>2. Fronz Sepp</Table.Cell>
                 </Table.Row>
+
                 <Table.Row>
                     <Table.Cell>3. Philip Mustang</Table.Cell>        
                 </Table.Row>
+                
+                <Table.Row>
+                    <Table.Cell>4. Falco</Table.Cell>        
+                </Table.Row>
+
+                <Table.Row>
+                    <Table.Cell>5. Heinz Fischer</Table.Cell>        
+                </Table.Row>
             </Table.Body>
-    </Table>
+        </Table>
     </div>
 )
 
 const Stats_fastest_games = () => (
     <div>
-        <Table color={'teal'} key={'teal'} inverted>
+        <Table color={'teal'} key={'teal'}>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Schnellsten Spiele</Table.HeaderCell>
@@ -85,21 +95,31 @@ const Stats_fastest_games = () => (
                 <Table.Row>
                     <Table.Cell>ISE1: 00:04:23</Table.Cell>
                 </Table.Row>
+
                 <Table.Row>
                     <Table.Cell>DNÜ1: 59:59:59</Table.Cell>
                 </Table.Row>
+
                 <Table.Row>
                     <Table.Cell>RTO1: 01:47:11</Table.Cell>        
                 </Table.Row>
+
+                <Table.Row>
+                    <Table.Cell>PRJ1: 00:00:00</Table.Cell>        
+                </Table.Row>
+
+                <Table.Row>
+                    <Table.Cell>SYM1: 01:00:01</Table.Cell>        
+                </Table.Row>
             </Table.Body>
-    </Table>
+        </Table>
     </div>
 )
   
 
-const Image_Stats_Grid_winner = () => (
+const Grid_winner = () => (
     <div>
-        <Grid divided='vertically' padded>
+        <Grid padded>
             <Grid.Row columns={2} padded textAlign='center' only='computer'>
                 <Grid.Column>
                     <p>{Image_function_winner()}</p>
@@ -138,13 +158,14 @@ const Image_Stats_Grid_winner = () => (
     </div>
 )
 
-const Image_Stats_Grid_loser = () => (
+const Grid_loser = () => (
     <div>
-        <Grid divided='vertically' padded>
+        <Grid padded>
             <Grid.Row columns={2} padded textAlign='center' only='computer'>
                 <Grid.Column>
                     <p>{Image_function_loser()}</p>
                     <p>{WinnerLable()}</p>
+                    <p>{Button_function()}</p> 
                 </Grid.Column>
                 <Grid.Column>
                     <p>{Stats_best_list()}</p>
@@ -173,6 +194,12 @@ const Image_Stats_Grid_loser = () => (
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
                     <p>{Stats_fastest_games()}</p>  
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    <p>{Button_function()}</p>  
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -192,13 +219,14 @@ const Button_function = () => (
         <Grid>
             <Grid.Row relaxed columns={2} padded textAlign='center'>
                 <Grid.Column>
-                    <Button color='teal'>
-                        <Header as='h4'>Erneut spielen</Header>
+                    <Button positive>
+                        Erneut spielen
                     </Button>  
                 </Grid.Column>
+
                 <Grid.Column>
-                    <Button color='teal'>
-                        <Header as='h4'>Spiel verlassen</Header>
+                    <Button negative>
+                        Spiel verlassen
                     </Button>
                 </Grid.Column>
             </Grid.Row>
@@ -210,29 +238,48 @@ const Button_function = () => (
 
 class End extends React.Component 
 {
-    render(){
+    constructor(props) {
+        super(props);
+        this.state = {
+          play_again: [],
+          error: false
+        };
+
+        this.play_again = this.play_again.bind(this);
+      }
+    
+    async play_again(){
+        let play_again = await data.joinLobby();
+        
+        if(play_again === null){
+           this.setState({error: true})
+        }else{
+           this.setState({play_again: play_again, error: false});
+        }
+    }
+
+    render()
+    { 
         /*WINNER*/
-        if(true)
+        if(false)
         {
             return (
                 <div>
                     <p>{Header_function()}</p>
-                    <p>{Image_Stats_Grid_winner()}</p>
-                    <p>{Button_function()}</p>
+                    <p>{Grid_winner()}</p>
                 </div>
                 );
         }
         /*LOSER*/
         else
         {
-        return (
-            <div>
-                <p>{Header_function()}</p>
-                <p>{Image_Stats_Grid_loser()}</p>
-                <p>{Button_function()}</p>
-            </div>
-            );
-        }
+            return (
+                <div>
+                    <p>{Header_function()}</p>
+                    <p>{Grid_loser()}</p>
+                </div>
+                );
+            }
     }
 }
 export default End;
