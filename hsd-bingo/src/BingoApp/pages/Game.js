@@ -6,13 +6,13 @@ import MyData from '../Data.js'
 //TODO: Columns vertikal centern (frag den Herzog)
 const checkInterval = 1000;
 
-function Field(props) {
+/*function Field(props) {
     return (
         <Grid.Column className="board-column" color={props.color} onClick={props.onClick}>
             {props.value}
         </Grid.Column>
     );
-}
+}*/
 
 function checkBingo(){
     if(MyData.bingo() != null){
@@ -30,7 +30,7 @@ class Game extends React.Component {
         super(props);
 
         this.state = {
-            squares: MyData.getBoard(),
+            squares: [],
             active: [],
             xIsNext: true,
         };
@@ -62,13 +62,14 @@ class Game extends React.Component {
             this.state.active.push(temp);
         }
 
-        return (
+        return null;
+        /*return (
             <Field
                 value={this.state.squares[x][y]}
                 onClick={() => this.handleClick(x,y)}
                 color={this.state.active[x][y] ? "red": "teal"}
             />
-        );
+        );*/
     }
 
     render(){
@@ -77,7 +78,7 @@ class Game extends React.Component {
                 <h1 align="center" >ISE1</h1>
 
                 <Grid columns={5}>
-                    {this.renderField(0,0)}
+                    {/*this.renderField(0,0)}
                     {this.renderField(1,0)}
                     {this.renderField(2,0)}
                     {this.renderField(3,0)}
@@ -101,7 +102,7 @@ class Game extends React.Component {
                     {this.renderField(1,4)}
                     {this.renderField(2,4)}
                     {this.renderField(3,4)}
-                    {this.renderField(4,4)}
+        {this.renderField(4,4)*/}
                 </Grid>
 
 
