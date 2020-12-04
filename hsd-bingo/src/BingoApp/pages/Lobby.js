@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, Header, Button, Table, Icon, Grid } from 'semantic-ui-react'
 import MyData from '../Data'
 
-const checkInterval = 500;
+const checkInterval = 1000;
 
 function sleep() {
     return new Promise(resolve => setTimeout(resolve, checkInterval));
@@ -35,14 +35,17 @@ class Lobby extends Component {
   }
 
   async loadPlayers(){
-    let players_list = await MyData.getPlayers();
-    
-    if(players_list === null){
-        this.setState({error: true});
-    }else{
-        this.setState({players: players_list, error: false});
+    while (this.state.started === false)
+    {
+      let players_list = await MyData.getPlayers();
+      
+      if(players_list === null){
+          this.setState({error: true});
+      }else{
+          this.setState({players: players_list, error: false});
+      }
+      await sleep();
     }
-    await sleep();
   }
 
   async loadUser(){
@@ -53,7 +56,6 @@ class Lobby extends Component {
     }else{
         this.setState({name: user.name, master: user.master, error: false});
     }
-    await sleep();
   }
 
   async loadLobby(){
@@ -64,7 +66,6 @@ class Lobby extends Component {
     }else{
         this.setState({lobby: lobby, error: false});
     }
-    await sleep();
   }
   
 
