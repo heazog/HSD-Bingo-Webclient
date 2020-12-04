@@ -26,4 +26,9 @@ jobs:
       run: npm run build --if-present
     - working-directory: ./hsd-bingo
       run: npm test
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist-without-markdown
+        path: ./hsd-bingo/build
 
