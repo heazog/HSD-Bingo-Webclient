@@ -1,28 +1,69 @@
 import React from 'react';
-import { Grid } from 'semantic-ui-react'
-import MyData from '../Data.js'
+import { Grid, Message } from 'semantic-ui-react'
+import data from "../Data";
+import Icon from "semantic-ui-react/dist/commonjs/elements/Icon";
 
 
 //TODO: Columns vertikal centern (frag den Herzog)
 const checkInterval = 1000;
 
-/*function Field(props) {
+const placeholderTerms = [
+    [
+        "wort11",
+        "wort12",
+        "wort13",
+        "wort14",
+        "wort15"
+    ],
+    [
+        "wort21",
+        "wort22",
+        "wort23",
+        "wort24",
+        "wort25"
+    ],
+    [
+        "wort31",
+        "wort32",
+        "wort33",
+        "wort34",
+        "wort35"
+    ],
+    [
+        "wort41",
+        "wort42",
+        "wort43",
+        "wort44",
+        "wort45"
+    ],
+    [
+        "wort51",
+        "wort52",
+        "wort53",
+        "wort54",
+        "wort55"
+    ]
+];
+
+function Field(props) {
     return (
         <Grid.Column className="board-column" color={props.color} onClick={props.onClick}>
             {props.value}
         </Grid.Column>
     );
-}*/
+}
 
-function checkBingo(){
-    if(MyData.bingo() != null){
-        //Gewinnername speichern
-        /*if(MyData.bingo() == MyData.getUsername()) {
-            //Gewinnerbildschirm
-        }else{
-            //Verliererbildschirm
-        }*/
+async function checkBingo(){
+
+    let winner = await data.bingo();
+    //TODO: Gewinner setzen in Struktur. Hier oder in Datenschicht?
+
+    if(winner === data.getUser().name) {
+        //Gewinnerbildschirm
+    }else{
+        //Verliererbildschirm
     }
+
 }
 
 class Game extends React.Component {
@@ -30,20 +71,40 @@ class Game extends React.Component {
         super(props);
 
         this.state = {
-            squares: [],
+            terms: placeholderTerms,
             active: [],
-            xIsNext: true,
+            showCheckMessage: false,
         };
 
-        setInterval(function(){ checkBingo(); }, checkInterval);
+        this.setTerms = this.setTerms.bind(this);
+        //this.checkBingo = this.checkBingo.bind(this);
+        this.setTerms().catch(
+            err => console.log('Error in setTerms: ' + err),
+        );
+
+        //setInterval(function(){ this.checkBingo();}, checkInterval);
+
+        setInterval(() => {
+            checkBingo().catch(
+                err => console.log('Error in checkBingo: ' + err),
+            );
+        }, checkInterval);
+
     }
 
-    handleClick(x,y) {
+    async handleClick(x,y) {
+        let allowed = await data.makeSelection(x,y);
         const active = this.state.active.slice();
+        this.setState({showCheckMessage: true});
 
-        //Request senden
-        if(MyData.makeSelection(12345,x,y)){
+        if(allowed === true){
             active[x][y] = true;
+            this.setState({showCheckMessage: false});
+
+        }
+        else{
+            //Pop-up
+            //Begriff wurde abgelehnt
         }
 
         this.setState({
@@ -51,25 +112,52 @@ class Game extends React.Component {
         });
     }
 
+    async setTerms(){
+        let terms = await data.getBoard();
+
+        if(terms === null){
+            this.setState({terms: null})
+        }else{
+            this.setState({terms: terms});
+        }
+    }
+
+
+
+
+
+
     renderField(x,y) {
-
-
-        for(let y=0; y< this.state.squares.length; y++) {
+        for(let y=0; y< this.state.terms.length; y++) {
             let temp = [];
-            for(let x=0; x< this.state.squares[0].length; x++) {
+            for(let x=0; x< this.state.terms[0].length; x++) {
                 temp.push(false);
             }
             this.state.active.push(temp);
         }
 
-        return null;
-        /*return (
+        //return null;
+        return (
             <Field
-                value={this.state.squares[x][y]}
+                value={this.state.terms[x][y]}
                 onClick={() => this.handleClick(x,y)}
                 color={this.state.active[x][y] ? "red": "teal"}
             />
-        );*/
+        );
+    }
+
+    renderCheckMessage(){
+
+
+        return (
+            <Message icon visible={this.state.showCheckMessage}>
+                <Icon name='circle notched' loading />
+                <Message.Content compact>
+                    <Message.Header>Begriff wird geprüft</Message.Header>
+                    Mättlab
+                </Message.Content>
+            </Message>
+        );
     }
 
     render(){
@@ -77,8 +165,8 @@ class Game extends React.Component {
             <div className="game">
                 <h1 align="center" >ISE1</h1>
 
-                <Grid columns={5}>
-                    {/*this.renderField(0,0)}
+                <Grid columns={5} padded>
+                    {this.renderField(0,0)}
                     {this.renderField(1,0)}
                     {this.renderField(2,0)}
                     {this.renderField(3,0)}
@@ -102,12 +190,15 @@ class Game extends React.Component {
                     {this.renderField(1,4)}
                     {this.renderField(2,4)}
                     {this.renderField(3,4)}
-        {this.renderField(4,4)*/}
+                    {this.renderField(4,4)}
                 </Grid>
 
 
+
+                {this.renderCheckMessage()}
+
                 <div className="ui message floating">
-                    <div className="ui equal width grid">{/* ein class hast übersehen :D */}
+                    <div className="ui equal width grid">
                         <div className="eight wide column">
                             <div className="game-message-container">
                                 <div className="header">

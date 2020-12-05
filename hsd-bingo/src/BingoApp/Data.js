@@ -127,39 +127,39 @@ class DataDummy extends DataBase{
         await sleep(1000);
         return [
             [
-                "wort11",
-                "wort12",
-                "wort13",
-                "wort14",
-                "wort15"
+                "Ähm",
+                "Also",
+                "Any questions?",
+                "Äquivalentes Basisband",
+                "AWGN"
             ],
             [
-                "wort21",
-                "wort22",
-                "wort23",
-                "wort24",
-                "wort25"
+                "Bandbreite",
+                "Bandbreiteneffizienz",
+                "Basisband",
+                "Betrag+Phase",
+                "Bodediagramm"
             ],
             [
-                "wort31",
-                "wort32",
-                "wort33",
-                "wort34",
-                "wort35"
+                "Mach ma mal weiter",
+                "Matched Filter",
+                "Mättlab",
+                "Mobilfunk",
+                "Multiplikativer Faktor"
             ],
             [
-                "wort41",
-                "wort42",
-                "wort43",
-                "wort44",
-                "wort45"
+                "Nachrichtentechnik",
+                "Nebenfrequenzen",
+                "Normalisiert",
+                "Nutzsignal",
+                "Nyquist/ -kriterium / -theorem"
             ],
             [
-                "wort51",
-                "wort52",
-                "wort53",
-                "wort54",
-                "wort55"
+                "Schuldigung",
+                "Sendeimpuls",
+                "So/Soo",
+                "Spektrum",
+                "Symbolperiode"
             ]
         ];
     }
