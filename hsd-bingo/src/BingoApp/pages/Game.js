@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Message } from 'semantic-ui-react'
+import { Grid, Message, Button } from 'semantic-ui-react'
 import data from "../Data";
 import Icon from "semantic-ui-react/dist/commonjs/elements/Icon";
 
@@ -73,7 +73,8 @@ class Game extends React.Component {
         this.state = {
             terms: placeholderTerms,
             active: [],
-            showCheckMessage: false,
+            currentTerm: null,
+            hideCheckMessage: true
         };
 
         this.setTerms = this.setTerms.bind(this);
@@ -93,14 +94,14 @@ class Game extends React.Component {
     }
 
     async handleClick(x,y) {
+        this.setState({hideCheckMessage: false});
+        this.setState({currentTerm: this.state.terms[x][y]});
         let allowed = await data.makeSelection(x,y);
         const active = this.state.active.slice();
-        this.setState({showCheckMessage: true});
 
         if(allowed === true){
             active[x][y] = true;
-            this.setState({showCheckMessage: false});
-
+            this.setState({hideCheckMessage: true});
         }
         else{
             //Pop-up
@@ -121,9 +122,6 @@ class Game extends React.Component {
             this.setState({terms: terms});
         }
     }
-
-
-
 
 
 
@@ -148,15 +146,35 @@ class Game extends React.Component {
 
     renderCheckMessage(){
 
+        return (
+            <Grid centered padded>
+                <Grid.Column mobile={16} computer={8}>
+                    <Message icon hidden={this.state.hideCheckMessage}>
+                        <Icon name='circle notched' loading />
+                        <Message.Content>
+                            <Message.Header>Begriff wird geprüft</Message.Header>
+                            {this.state.currentTerm}
+                        </Message.Content>
+                    </Message>
+                </Grid.Column>
+            </Grid>
+        );
+    }
+
+    renderRejectMessage(){
 
         return (
-            <Message icon visible={this.state.showCheckMessage}>
-                <Icon name='circle notched' loading />
-                <Message.Content compact>
-                    <Message.Header>Begriff wird geprüft</Message.Header>
-                    Mättlab
-                </Message.Content>
-            </Message>
+            <Grid centered padded>
+                <Grid.Column mobile={16} computer={8}>
+                    <Message icon hidden={false}>
+                        <Message.Content>
+                            <Message.Header>Neuer Begriff</Message.Header>
+                            Machma mal 5 Minuten Pause bitte
+                        </Message.Content>
+                        <Button style={{ marginLeft: '0.25em' }}>Ablehnen</Button>
+                    </Message>
+                </Grid.Column>
+            </Grid>
         );
     }
 
@@ -193,27 +211,10 @@ class Game extends React.Component {
                     {this.renderField(4,4)}
                 </Grid>
 
-
-
                 {this.renderCheckMessage()}
 
-                <div className="ui message floating">
-                    <div className="ui equal width grid">
-                        <div className="eight wide column">
-                            <div className="game-message-container">
-                                <div className="header">
-                                    Neuer Begriff
-                                </div>
-                                <p>Machma 5 Minuten Pause</p>
-                            </div>
-                        </div>
-                        <div className="eight wide column center aligned">
-                            <div className="game-buttons-container">
-                                <button className="ui button">Ablehnen</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {this.renderRejectMessage()}
+
             </div>
         );
     }
