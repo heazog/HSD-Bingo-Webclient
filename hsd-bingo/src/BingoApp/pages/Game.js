@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Message, Button } from 'semantic-ui-react'
+import {Grid, Message, Button} from 'semantic-ui-react'
 import data from "../Data";
 import Icon from "semantic-ui-react/dist/commonjs/elements/Icon";
 
@@ -71,6 +71,7 @@ class Game extends React.Component {
         super(props);
 
         this.state = {
+            lobby: data.getLobby(),
             terms: placeholderTerms,
             active: [],
             currentTerm: null,
@@ -124,7 +125,6 @@ class Game extends React.Component {
     }
 
 
-
     renderField(x,y) {
         for(let y=0; y< this.state.terms.length; y++) {
             let temp = [];
@@ -134,7 +134,6 @@ class Game extends React.Component {
             this.state.active.push(temp);
         }
 
-        //return null;
         return (
             <Field
                 value={this.state.terms[x][y]}
@@ -181,7 +180,8 @@ class Game extends React.Component {
     render(){
         return (
             <div className="game">
-                <h1 align="center" >ISE1</h1>
+
+                <h1 align="center" >{this.state.lobby}</h1>
 
                 <Grid columns={5} padded>
                     {this.renderField(0,0)}
