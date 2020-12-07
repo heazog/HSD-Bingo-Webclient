@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Header, Button, Table, Icon, Grid } from 'semantic-ui-react'
+import { Message, Container, Header, Button, Table, Icon, Grid } from 'semantic-ui-react'
 import MyData from '../Data'
 
 const checkInterval = 1000;
@@ -25,10 +25,12 @@ class Lobby extends Component {
 
     this.loadPlayers = this.loadPlayers.bind(this);
     this.toggleReady = this.toggleReady.bind(this);
+    this.startGame = this.startGame.bind(this);
     this.leaveLobby = this.leaveLobby.bind(this);
     this.printReady = this.printReady.bind(this);
     this.printOwnName = this.printOwnName.bind(this);
-
+    this.renderLoadMessage = this.renderLoadMessage.bind(this);
+    
     this.loadPlayers();
     this.loadUser();
     this.loadLobby();
@@ -73,15 +75,21 @@ class Lobby extends Component {
     this.setState((prevState) => ({ ready: !prevState.ready }))
     if(this.state.master === true)
     {
-      this.setState({started: true});
-      //start game
+      this.startGame();
     }
   }
 
-  leaveLobby() {
-    
+  async startGame(){
+    this.setState({started: true});
+    //await MyData.requestBoard();
+    //change screen to game
   }
 
+  leaveLobby() {
+    //change screen to start
+  }
+
+  
 
   GridMaster = () => (
     <Grid divided='vertically'>
@@ -118,6 +126,21 @@ class Lobby extends Component {
           )
      }
   }
+  
+  renderLoadMessage(){
+        return (
+            <Grid centered padded>
+                <Grid.Column mobile={16} computer={8}>
+                    <Message icon hidden={!this.state.started}>
+                        <Icon name='circle notched' loading />
+                        <Message.Content>
+                            <Message.Header>Spiel wird vorbereitet!</Message.Header>
+                        </Message.Content>
+                    </Message>
+                </Grid.Column>
+            </Grid>
+        );
+    }
 
   TablePlayerLobby = () => (
     <Table unstackable celled>
@@ -225,6 +248,7 @@ class Lobby extends Component {
           <Container className="Lobby">
               {this.GridHeader()}
               {this.TablePlayerLobby()}
+              {this.renderLoadMessage()}
           </Container>
         );
   }
