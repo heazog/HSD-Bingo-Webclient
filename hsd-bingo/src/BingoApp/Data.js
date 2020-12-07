@@ -184,7 +184,7 @@ class DataDummy extends DataBase{
         return {
             name: "Ich", 
             id: 3, 
-            master: false
+            master: true
         };
     }
 
