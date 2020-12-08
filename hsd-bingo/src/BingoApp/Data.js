@@ -71,25 +71,29 @@ function sleep(ms) {
 }
 
 class DataDummy extends DataBase{
-    async getLobbies(){  
+    async getLobbies(){
+
+        let DummyLobbie = [];
+
+        for(let i=0;i<12; i++){
+
+            let LVA = {
+                "name": "LVA" + (1 + Math.round(Math.random()*8)),
+                "users": ((Math.round(Math.random()*3) < 2) ? Math.round(Math.random()*40) : 0)
+            };
+
+            DummyLobbie = DummyLobbie.concat(LVA)
+        }
+
         await sleep(1000);
-        return [
-            {
-                "name": "LVA"+Math.round(Math.random()*10).toString(),
-                "users": 7
-            },
-            {
-                "name": "LVA"+Math.round(Math.random()*10).toString(),
-                "users": 2
-            }
-        ];
+        return DummyLobbie;
     }
 
     async joinLobby(lobby, username){
         await sleep(1000);
         return [
             {
-                "UID": 3,
+                "UID": 0,
                 "master": true
             }
         ];
