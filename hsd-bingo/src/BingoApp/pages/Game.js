@@ -79,7 +79,6 @@ class Game extends React.Component {
         };
 
         this.setTerms = this.setTerms.bind(this);
-        //this.checkBingo = this.checkBingo.bind(this);
         this.setTerms().catch(
             err => console.log('Error in setTerms: ' + err),
         );
@@ -118,9 +117,9 @@ class Game extends React.Component {
         let terms = await data.getBoard();
 
         if(terms === null){
-            this.setState({terms: null})
+            this.state.terms = null;
         }else{
-            this.setState({terms: terms});
+            this.state.terms = terms;
         }
     }
 

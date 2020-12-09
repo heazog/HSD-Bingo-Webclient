@@ -75,10 +75,10 @@ class Start extends React.Component {
             message: "Username wird geprüft",
         };
 
+        //this.setUsername = this.setUsername.bind(this);
+       // this.setLobby = this.setLobby.bind(this);
+        //this.enterLobby = this.enterLobby.bind(this);
         this.getLobbies = this.getLobbies.bind(this);
-        this.setUsername = this.setUsername.bind(this);
-        this.setLobby = this.setLobby.bind(this);
-        this.enterLobby = this.enterLobby.bind(this);
         this.getLobbies().catch(err => console.log('Error in getLobbies: ' + err),);
     }
 
@@ -153,10 +153,10 @@ class Start extends React.Component {
         }
     }
 
-    renderSingleLVA(lva){
+    renderSingleLVA(lva, index){
         if(lva.users === 0){
             return(
-                <Button
+                <Button key={index}
                     onClick={() => this.setLobby(lva.alias)}
                     color='teal'
                     style={{marginBottom: 0.25 + "em"}}>
@@ -166,7 +166,8 @@ class Start extends React.Component {
         }
         else{
             return(
-                <Button as='div'
+                <Button key={index}
+                        as='div'
                         labelPosition='right'
                         onClick={() => this.setLobby(lva.alias)}
                         style={{marginBottom: 0.25 + "em"}}>
@@ -182,16 +183,16 @@ class Start extends React.Component {
 
     }
 
-    renderLobbies(sem){
+    renderLobbies(sem, index){
         if(sem.name !== "") {
             return (
-                <Grid centered padded>
+                <Grid key = {index} centered padded>
                     <Header as='h3' style={{marginTop: 0.5 + "em", marginBottom: 0}}>
                         {sem.name}
                     </Header>
                     <Grid.Row>
-                        {sem.Lvas.map((lva) => (
-                            this.renderSingleLVA(lva)
+                        {sem.Lvas.map((lva, index) => (
+                            this.renderSingleLVA(lva, index)
                         ))}
                     </Grid.Row>
                 </Grid>
@@ -202,8 +203,8 @@ class Start extends React.Component {
     renderSemesters(){
         return(
             <Grid.Row>
-                {this.state.lobbies.map((sem) => (
-                    this.renderLobbies(sem)
+                {this.state.lobbies.map((sem, index) => (
+                    this.renderLobbies(sem, index)
                 ))}
             </Grid.Row>
 

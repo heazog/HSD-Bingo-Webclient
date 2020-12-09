@@ -157,10 +157,10 @@ class Lobby extends Component {
           <Table.Cell>{this.printReady(this.state.ready)}</Table.Cell>
         </Table.Row>
 
-        {this.state.players.map((player) => {
+        {this.state.players.map((player, index) => {
           var status = player.status === "ready";
             return (
-            <Table.Row>
+            <Table.Row key={index}>
               <Table.Cell>{player.name}</Table.Cell>
               <Table.Cell>{this.printReady(status)}</Table.Cell>
             </Table.Row>
