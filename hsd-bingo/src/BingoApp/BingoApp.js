@@ -1,13 +1,9 @@
 import React from 'react';
-import { Container, Divider, Header, Icon, Button } from 'semantic-ui-react';
+import { Button, Container, Divider } from 'semantic-ui-react';
 import Start from './pages/Start'
 import Lobby from './pages/Lobby'
 import Game from './pages/Game'
 import End from './pages/End'
-
-import MyData from './Data'
-
-
 
 
 class App extends React.Component {
@@ -15,60 +11,52 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          lobbies: [],
+          page: 0,
           error: false
         };
 
-        this.loadLobbies = this.loadLobbies.bind(this);
+        this.setPage = this.setPage.bind(this);
       }
     
 
-    async loadLobbies(){
-        let lobbies = await MyData.getLobbies();
-        
-        if(lobbies === null){
-           this.setState({error: true})
-        }else{
-           this.setState({lobbies: lobbies, error: false});
-        }
+    setPage(num){
+        this.setState({page: num});
     }
 
     render(){
+        var page = null;
+        switch(this.state.page){
+            case 0: 
+                page = <Start goToPage={this.setPage} />;
+                break;
+            case 1: 
+                page = <Lobby goToPage={this.setPage} />;
+                break;
+            case 2: 
+                page = <Game goToPage={this.setPage} />;
+                break;
+            case 3: 
+                page = <End goToPage={this.setPage} />;
+                break;
+            default:
+                page = <h1>ERROR</h1>;
+                break;
+        }
+
+        // IHR BENÖTIGT ZUM NAVIGIEREN:
+        // this.props.goToPage(SEITE)
+        // z.B.:
+        // <Button onClick={() => this.props.goToPage(1)}>next</Button>
+
         return (
             <Container className="BingoApp">
-                <h1>Hallo!</h1>
-                <Button icon='refresh' onClick={this.loadLobbies} floated='right' />
-                {this.state.lobbies.map((lobby) => {
-                    return <h2>{lobby.name}</h2>;
-                })}
-                <Divider horizontal>
-                    <Header as='h4'>
-                        <Icon name='arrow right' />
-                        Start
-                    </Header>
-                </Divider>
-                <Start/>
-                <Divider horizontal>
-                    <Header as='h4'>
-                        <Icon name='wait' />
-                        Lobby
-                    </Header>
-                </Divider>
-                <Lobby/>
-                <Divider horizontal>
-                    <Header as='h4'>
-                        <Icon name='play' />
-                        Game
-                    </Header>
-                </Divider>
-                <Game/>
-                <Divider horizontal>
-                    <Header as='h4'>
-                        <Icon name='stop' />
-                        End
-                    </Header>
-                </Divider>
-                <End/>
+                <Button onClick={() => this.setPage(0)}>0</Button>
+                <Button onClick={() => this.setPage(1)}>1</Button>
+                <Button onClick={() => this.setPage(2)}>2</Button>
+                <Button onClick={() => this.setPage(3)}>3</Button>
+                <Divider horizontal>Game</Divider>
+                <br/>
+                {page}                
             </Container>
           );
     }
