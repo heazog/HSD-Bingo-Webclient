@@ -5,8 +5,10 @@ import { Header, Button, Image, Table, Grid, Segment, Container} from 'semantic-
 /* CONSTANTS */
 const winner_links = [  'https://media2.giphy.com/media/l4hLwMmFVBOAKF3EI/giphy.gif',
                         'https://media2.giphy.com/media/3o7TKF5DnsSLv4zVBu/giphy.gif',
-                        'https://media4.giphy.com/media/9xt1MUZqkneFiWrAAD/giphy.gif?cid=ecf05e47ok4e9gf3hr29te6xlp38lrdt3rmaw9ykmjfq6f1u&rid=giphy.gif'
-]
+                        'https://media4.giphy.com/media/9xt1MUZqkneFiWrAAD/giphy.gif?cid=ecf05e47ok4e9gf3hr29te6xlp38lrdt3rmaw9ykmjfq6f1u&rid=giphy.gif',
+                        'https://i.imgur.com/hlAW0FX.gif',
+                        'https://i.imgur.com/t55uVPw.gif'
+                    ]
 
 const loser_links = [   'https://media2.giphy.com/media/mcH0upG1TeEak/giphy.gif',
                         'https://media3.giphy.com/media/suCJQGchI6oBW/giphy.gif',
@@ -27,41 +29,49 @@ class End extends React.Component
         this.state = {
             subject: "",
             name: "",
-            winner: "",
+            name_winner: "",
             error: false
         };
 
         this.play_again = this.play_again.bind(this);
         this.leave_game = this.leave_game.bind(this);
 
-        this.load_subject();
+        this.get_subject();
         this.get_User();
+        this.get_Winner();
     }
 
-    async load_subject(){
-        let subject = await data.getLobby();
+    async get_subject(){
+        let subjects = await data.getLobby();
 
-        if(subject === null){
-            this.setState({error: true});
+        if(subjects === null){
+            this.state.error = true;
         }else{
-            this.setState({subject: subject, error: false});
+            this.state.subject = subjects;
+            this.state.error = false;
         }
     }
 
     async get_User(){
         let user = await data.getUser();
+        
+        if(user === null){
+            this.state.error = true;
+        }else{
+            this.state.name = user.name;
+            this.state.error = false;
+        }
+    }
+
+    async get_Winner(){
         let winner = await data.getWinner();
 
-        if(user === null){
-            this.setState({error: true});
-        }else{
-            this.setState({name: user.name, error: false});
-        }
-
         if(winner === null){
-            this.setState({error: true});
+            this.state.error = true;
         }else{
-            this.setState({winner: winner, error: false});
+            this.setState({name_winner: winner, error: false});
+            //this.state.name_winner = winner;
+            //this.state.error = false;
         }
     }
 
@@ -78,8 +88,8 @@ class End extends React.Component
 /***********************************************************************************/
 /***********************************************************************************/
     Header_function = () => (
-        <Grid columns='equal' divided padded>
-            <Grid.Row color='teal' textAlign='center'>
+        <Grid columns='equal' padded>
+            <Grid.Row textAlign='center'>
                 <Grid.Column>
                     <Segment color='teal' inverted>
                         <Header as='h3'>HSD-BINGO</Header>
@@ -99,11 +109,11 @@ class End extends React.Component
     )
     
     Image_function_loser = () => (
-        <Image src={loser_links[Math.floor(Math.random()*loser_links.length)]}fluid />
+        <Image src={loser_links[Math.floor(Math.random()*loser_links.length)]} fluid />
     )
     
     Stats_best_list = () => (
-        <Table color={'teal'} key={'teal'}>
+        <Table color={'teal'} key={'teal1'}>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Ewige Bestenliste</Table.HeaderCell>
@@ -135,7 +145,7 @@ class End extends React.Component
     )
     
     Stats_fastest_games = () => (
-        <Table color={'teal'} key={'teal'}>
+        <Table color={'teal'} key={'teal2'}>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Schnellsten Spiele</Table.HeaderCell>
@@ -255,7 +265,7 @@ class End extends React.Component
     )
     
     WinnerLable = () => (
-        <Header as='h1'>{this.state.winner} hat das Spiel gewonnen!</Header>
+        <Header as='h1'>"{this.state.name_winner}" hat das Spiel gewonnen!</Header>
     )
     
     Button_function = () => (
@@ -285,7 +295,7 @@ class End extends React.Component
     render()
     { 
         /*WINNER*/
-        if(this.state.name === this.state.winner)
+        if(this.state.name === this.state.name_winner)
         {
             return (
                 <Container className="End">
