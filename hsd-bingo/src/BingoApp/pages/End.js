@@ -1,7 +1,6 @@
 import React from 'react';
 import data from '../Data';
-//import { Divider, Label} from 'semantic-ui-react'; nicht verwendete Objekte auskommentieren oder löschen
-import { Header, Button, Image, Table, Grid, Segment, Form} from 'semantic-ui-react';
+import { Header, Button, Image, Table, Grid, Segment, Container} from 'semantic-ui-react';
 
 /* CONSTANTS */
 const winner_links = [  'https://media2.giphy.com/media/l4hLwMmFVBOAKF3EI/giphy.gif',
@@ -16,10 +15,69 @@ const loser_links = [   'https://media2.giphy.com/media/mcH0upG1TeEak/giphy.gif'
                         'https://media3.giphy.com/media/WrNfErHio7ZAc/giphy.gif?cid=ecf05e47ahzzaw2emt1fm7yndu4bk57sehu6kj54pv29gq1d&rid=giphy.gif'
 ]
 
-/**+*********************************************************************************/
+/***********************************************************************************/
+/***********************************************************************************/
+/***********************************************************************************/
 
-const Header_function = () => (
-    <div>
+class End extends React.Component 
+{
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            subject: "",
+            name: "",
+            winner: "",
+            error: false
+        };
+
+        this.play_again = this.play_again.bind(this);
+        this.leave_game = this.leave_game.bind(this);
+
+        this.load_subject();
+        this.get_User();
+    }
+
+    async load_subject(){
+        let subject = await data.getLobby();
+
+        if(subject === null){
+            this.setState({error: true});
+        }else{
+            this.setState({subject: subject, error: false});
+        }
+    }
+
+    async get_User(){
+        let user = await data.getUser();
+        let winner = await data.getWinner();
+
+        if(user === null){
+            this.setState({error: true});
+        }else{
+            this.setState({name: user.name, error: false});
+        }
+
+        if(winner === null){
+            this.setState({error: true});
+        }else{
+            this.setState({winner: winner, error: false});
+        }
+    }
+
+    play_again(){
+        //get to lobby
+    }
+
+    leave_game(){
+        //get to start screen
+    }
+      
+
+/***********************************************************************************/
+/***********************************************************************************/
+/***********************************************************************************/
+    Header_function = () => (
         <Grid columns='equal' divided padded>
             <Grid.Row color='teal' textAlign='center'>
                 <Grid.Column>
@@ -29,28 +87,22 @@ const Header_function = () => (
                 </Grid.Column>
                 <Grid.Column>
                     <Segment color='teal' inverted>
-                        <Header as='h3'>ISE1</Header>
+                        <Header as='h3'>{this.state.subject}</Header>
                     </Segment>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    </div>
-  )
-
-const Image_function_winner = () => (
-    <div>
+      )
+    
+    Image_function_winner = () => (
         <Image src={winner_links[Math.floor(Math.random()*winner_links.length)]} fluid />
-    </div>
-)
-
-const Image_function_loser = () => (
-    <div>
+    )
+    
+    Image_function_loser = () => (
         <Image src={loser_links[Math.floor(Math.random()*loser_links.length)]}fluid />
-    </div>
-)
-
-const Stats_best_list = () => (
-    <div>
+    )
+    
+    Stats_best_list = () => (
         <Table color={'teal'} key={'teal'}>
             <Table.Header>
                 <Table.Row>
@@ -80,11 +132,9 @@ const Stats_best_list = () => (
                 </Table.Row>
             </Table.Body>
         </Table>
-    </div>
-)
-
-const Stats_fastest_games = () => (
-    <div>
+    )
+    
+    Stats_fastest_games = () => (
         <Table color={'teal'} key={'teal'}>
             <Table.Header>
                 <Table.Row>
@@ -114,173 +164,146 @@ const Stats_fastest_games = () => (
                 </Table.Row>
             </Table.Body>
         </Table>
-    </div>
-)
-  
-
-const Grid_winner = () => (
-    <div>
+    )
+      
+    
+    Grid_winner = () => (
         <Grid padded>
             <Grid.Row columns={2} textAlign='center' only='computer'> {/* padded is bei Row ned erlaubt */}
                 <Grid.Column>
-                    {Image_function_winner()}
-                    {WinnerLable()}
+                    {this.Image_function_winner()}
+                    {this.WinnerLable()}
                 </Grid.Column>
                 <Grid.Column>
-                    {Stats_best_list()}
-                    {Stats_fastest_games()}
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    {Image_function_winner()}
+                    {this.Stats_best_list()}
+                    {this.Stats_fastest_games()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    {WinnerLable()}
+                    {this.Image_function_winner()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    {Stats_best_list()}  
+                    {this.WinnerLable()}
                 </Grid.Column>
             </Grid.Row>
 
             <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
                 <Grid.Column>
-                    {Stats_fastest_games()}  
+                    {this.Stats_best_list()}  
+                </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Column>
+                    {this.Stats_fastest_games()}  
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    </div>
-)
-
-const Grid_loser = () => (
-    <div>
-        <Grid padded>
-            <Grid.Row columns={2} textAlign='center' only='computer'>
-                <Grid.Column>
-                    {Image_function_loser()}
-                    {WinnerLable()}
-                    {Button_function()} 
-                </Grid.Column>
-                <Grid.Column>
-                    {Stats_best_list()}
-                    {Stats_fastest_games()}
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    {Image_function_loser()}
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    {WinnerLable()}
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    {Stats_best_list()}  
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    {Stats_fastest_games()}  
-                </Grid.Column>
-            </Grid.Row>
-
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                <Grid.Column>
-                    {Button_function()}  
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    </div>
-)
-
-const WinnerLable = () => (
-    <Form>
-      <Form.Field>
-        <input type='text' placeholder='Winner Name' />
-      </Form.Field>
-    </Form>
-)
-
-const Button_function = () => (
-    <div>
-        <Grid>
-            <Grid.Row columns={2} textAlign='center'>{/* relaxed & padded is bei Row ungültig - gehört des ins <Grid>?*/}
-                <Grid.Column>
-                    <Button positive>
-                        Erneut spielen
-                    </Button>  
-                </Grid.Column>
-
-                <Grid.Column>
-                    <Button negative>
-                        Spiel verlassen
-                    </Button>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>  
-    </div>
-  )
-
-/**+*********************************************************************************/
-
-class End extends React.Component 
-{
-    constructor(props) {
-        super(props);
-        this.state = {
-          play_again: [],
-          error: false
-        };
-
-        this.play_again = this.play_again.bind(this);
-      }
+    )
     
-    async play_again(){
-        let play_again = await data.joinLobby();
-        
-        if(play_again === null){
-           this.setState({error: true})
-        }else{
-           this.setState({play_again: play_again, error: false});
-        }
-    }
+    Grid_loser = () => (
+        <div>
+            <Grid padded>
+                <Grid.Row columns={2} textAlign='center' only='computer'>
+                    <Grid.Column>
+                        {this.Image_function_loser()}
+                        {this.WinnerLable()}
+                        {this.Button_function()} 
+                    </Grid.Column>
+                    <Grid.Column>
+                        {this.Stats_best_list()}
+                        {this.Stats_fastest_games()}
+                    </Grid.Column>
+                </Grid.Row>
+    
+                <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                    <Grid.Column>
+                        {this.Image_function_loser()}
+                    </Grid.Column>
+                </Grid.Row>
+    
+                <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                    <Grid.Column>
+                        {this.WinnerLable()}
+                    </Grid.Column>
+                </Grid.Row>
+    
+                <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                    <Grid.Column>
+                        {this.Stats_best_list()}  
+                    </Grid.Column>
+                </Grid.Row>
+    
+                <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                    <Grid.Column>
+                        {this.Stats_fastest_games()}  
+                    </Grid.Column>
+                </Grid.Row>
+    
+                <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                    <Grid.Column>
+                        {this.Button_function()}  
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </div>
+    )
+    
+    WinnerLable = () => (
+        <Header as='h1'>{this.state.winner} hat das Spiel gewonnen!</Header>
+    )
+    
+    Button_function = () => (
+        <div>
+            <Grid relaxed padded>
+                <Grid.Row columns={2} textAlign='center'>
+                    <Grid.Column>
+                        <Button positive>
+                            Erneut spielen
+                        </Button>  
+                    </Grid.Column>
+    
+                    <Grid.Column>
+                        <Button negative>
+                            Spiel verlassen
+                        </Button>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>  
+        </div>
+      )
+    
+/***********************************************************************************/
+/***********************************************************************************/
+/***********************************************************************************/
 
     render()
     { 
         /*WINNER*/
-        if(false)
+        if(this.state.name === this.state.winner)
         {
             return (
-                <div>
-                    {Header_function() /* h3, form usw. darf ned innerhalb von <p> sein, hab jetzt alle entfernt - vielleicht war des zu viel, aber bitte zukünfig auf die warnings achten :)*/}
-                    {Grid_winner()}
-                </div>
+                <Container className="End">
+                    {this.Header_function()}
+                    {this.Grid_winner()}
+                </Container>
                 );
         }
         /*LOSER*/
         else
         {
             return (
-                <div>
-                    {Header_function()}
-                    {Grid_loser()}
-                </div>
+                <Container className="End">
+                    {this.Header_function()}
+                    {this.Grid_loser()}
+                </Container>
                 );
-            }
+        }
     }
 }
 export default End;
