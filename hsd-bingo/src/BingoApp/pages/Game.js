@@ -7,7 +7,7 @@ import Icon from "semantic-ui-react/dist/commonjs/elements/Icon";
 //TODO: Columns vertikal centern (frag den Herzog)
 const checkInterval = 1000;
 
-const placeholderTerms = [
+/*const placeholderTerms = [
     [
         "wort11",
         "wort12",
@@ -43,7 +43,7 @@ const placeholderTerms = [
         "wort54",
         "wort55"
     ]
-];
+];*/
 
 function Field(props) {
     return (
@@ -53,18 +53,6 @@ function Field(props) {
     );
 }
 
-async function checkBingo(){
-
-    let winner = await data.bingo();
-    //TODO: Gewinner setzen in Struktur. Hier oder in Datenschicht?
-
-    if(winner === data.getUser().name) {
-        //Gewinnerbildschirm
-    }else{
-        //Verliererbildschirm
-    }
-
-}
 
 class Game extends React.Component {
     constructor(props) {
@@ -72,25 +60,37 @@ class Game extends React.Component {
 
         this.state = {
             lobby: data.getLobby(),
-            terms: placeholderTerms,
+            terms: data.getBoard(),
             active: [],
             currentTerm: null,
-            hideCheckMessage: true
+            hideCheckMessage: true,
+            hideRejectMessage: true
         };
 
-        this.setTerms = this.setTerms.bind(this);
-        this.setTerms().catch(
+        //this.setTerms = this.setTerms.bind(this);
+        /*this.setTerms().catch(
             err => console.log('Error in setTerms: ' + err),
-        );
+        );*/
 
         //setInterval(function(){ this.checkBingo();}, checkInterval);
 
         setInterval(() => {
-            checkBingo().catch(
+            this.checkBingo().catch(
                 err => console.log('Error in checkBingo: ' + err),
             );
         }, checkInterval);
 
+    }
+
+    async checkBingo(){
+        let winner = await data.bingo();
+
+        //If there is a winner, call Page 4
+        if(winner !== null){
+            if(winner.winner !== null){
+                this.props.goToPage(3);
+            }
+        }
     }
 
     async handleClick(x,y) {
@@ -113,7 +113,7 @@ class Game extends React.Component {
         });
     }
 
-    async setTerms(){
+    /*async setTerms(){
         let terms = await data.getBoard();
 
         if(terms === null){
@@ -121,7 +121,7 @@ class Game extends React.Component {
         }else{
             this.state.terms = terms;
         }
-    }
+    }*/
 
 
     renderField(x,y) {
@@ -143,7 +143,6 @@ class Game extends React.Component {
     }
 
     renderCheckMessage(){
-
         return (
             <Grid centered padded>
                 <Grid.Column mobile={16} computer={8}>
@@ -160,11 +159,10 @@ class Game extends React.Component {
     }
 
     renderRejectMessage(){
-
         return (
             <Grid centered padded>
                 <Grid.Column mobile={16} computer={8}>
-                    <Message icon hidden={false}>
+                    <Message icon hidden={this.state.hideRejectMessage}>
                         <Message.Content>
                             <Message.Header>Neuer Begriff</Message.Header>
                             Machma mal 5 Minuten Pause bitte

@@ -171,7 +171,7 @@ class DataDummy extends DataBase{
         await sleep(1000);
         return [
             {
-                "UID": 0,
+                "UID": 3,
                 "master": true
             }
         ];
@@ -208,7 +208,7 @@ class DataDummy extends DataBase{
         return true;
     }
 
-    async updateBoard(){
+    async requestBoard(){
         await sleep(1000);
         this.board = [
             [

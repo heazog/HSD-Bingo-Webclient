@@ -73,11 +73,14 @@ class Start extends React.Component {
             username: "",
             hideCheckMessage: true,
             message: "Username wird geprüft",
+
         };
 
-        //this.setUsername = this.setUsername.bind(this);
-       // this.setLobby = this.setLobby.bind(this);
-        //this.enterLobby = this.enterLobby.bind(this);
+
+
+        this.setUsername = this.setUsername.bind(this);
+        this.setLobby = this.setLobby.bind(this);
+        this.enterLobby = this.enterLobby.bind(this);
         this.getLobbies = this.getLobbies.bind(this);
         this.getLobbies().catch(err => console.log('Error in getLobbies: ' + err),);
     }
@@ -114,6 +117,7 @@ class Start extends React.Component {
                     this.setState({hideCheckMessage: false});
                 }else {
                     this.setState({hideCheckMessage: true});
+                    this.props.goToPage(1);
                     //Nächster screen, username + ID werden von Datenschicht weitergereicht
                 }
             }
