@@ -52,11 +52,12 @@ class Lobby extends Component {
 
   async loadUser(){
     let user = await MyData.getUser();
+    let master = await MyData.getMaster();
 
     if(user === null){
         this.setState({error: true});
     }else{
-        this.setState({name: user.name, master: user.master, error: false});
+        this.setState({name: user, master: master, error: false});
     }
   }
 
@@ -81,12 +82,18 @@ class Lobby extends Component {
 
   async startGame(){
     this.setState({started: true});
-    //await MyData.requestBoard();
+    let ret = false 
+    while(!ret)
+    {
+      ret = await MyData.requestBoard();
+    }
     //change screen to game
+    this.props.goToPage(2)
   }
 
   leaveLobby() {
     //change screen to start
+    this.props.goToPage(0)
   }
 
   
