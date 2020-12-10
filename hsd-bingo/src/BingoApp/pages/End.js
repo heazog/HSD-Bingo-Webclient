@@ -7,14 +7,16 @@ const winner_links = [  'https://media2.giphy.com/media/l4hLwMmFVBOAKF3EI/giphy.
                         'https://media2.giphy.com/media/3o7TKF5DnsSLv4zVBu/giphy.gif',
                         'https://media4.giphy.com/media/9xt1MUZqkneFiWrAAD/giphy.gif?cid=ecf05e47ok4e9gf3hr29te6xlp38lrdt3rmaw9ykmjfq6f1u&rid=giphy.gif',
                         'https://i.imgur.com/hlAW0FX.gif',
-                        'https://i.imgur.com/t55uVPw.gif'
+                        'https://i.imgur.com/t55uVPw.gif',
+                        'https://media.giphy.com/media/YOGN4rRD44hPDlVdha/giphy.gif'
                     ]
 
 const loser_links = [   'https://media2.giphy.com/media/mcH0upG1TeEak/giphy.gif',
                         'https://media3.giphy.com/media/suCJQGchI6oBW/giphy.gif',
                         'https://media4.giphy.com/media/rKj0oXtnMQNwY/giphy.gif',
                         'https://media2.giphy.com/media/IhL8sICowZWmI/giphy.gif',
-                        'https://media3.giphy.com/media/WrNfErHio7ZAc/giphy.gif?cid=ecf05e47ahzzaw2emt1fm7yndu4bk57sehu6kj54pv29gq1d&rid=giphy.gif'
+                        'https://media3.giphy.com/media/WrNfErHio7ZAc/giphy.gif?cid=ecf05e47ahzzaw2emt1fm7yndu4bk57sehu6kj54pv29gq1d&rid=giphy.gif',
+                        'https://media.giphy.com/media/piTERt2CEdrLt2WLv0/giphy.gif'
 ]
 
 /***********************************************************************************/
@@ -34,32 +36,32 @@ class End extends React.Component
         };
 
         this.play_again = this.play_again.bind(this);
-        this.leave_game = this.leave_game.bind(this);
+        this.leave_game = this.leave_game.bind(this);        
+    }
 
+    componentDidMount(){
         this.get_subject();
         this.get_User();
         this.get_Winner();
     }
 
     async get_subject(){
-        let subjects = await data.getLobby();
+        let lobby_name = await data.getLobby();
 
-        if(subjects === null){
-            this.state.error = true;
+        if(lobby_name === null){
+            this.setState({error: true});
         }else{
-            this.state.subject = subjects;
-            this.state.error = false;
+            this.setState({subject: lobby_name, error: false});
         }
     }
 
     async get_User(){
-        let user = await data.getUser();
+        let userName = await data.getUser();
         
-        if(user === null){
-            this.state.error = true;
+        if(userName === null){
+            this.setState({error: true});
         }else{
-            this.state.name = user.name;
-            this.state.error = false;
+            this.setState({name: userName, error: false});
         }
     }
 
@@ -67,28 +69,24 @@ class End extends React.Component
         let winner = await data.getWinner();
 
         if(winner === null){
-            this.state.error = true;
+            this.setState({error: true});
         }else{
             this.setState({name_winner: winner, error: false});
-            //this.state.name_winner = winner;
-            //this.state.error = false;
         }
     }
 
     play_again(){
-        //get to lobby
+        this.props.goToPage(1);
     }
 
     leave_game(){
-        //get to start screen
+        this.props.goToPage(0);
     }
       
-
-/***********************************************************************************/
 /***********************************************************************************/
 /***********************************************************************************/
     Header_function = () => (
-        <Grid columns='equal' padded>
+        <Grid columns='equal' padded >
             <Grid.Row textAlign='center'>
                 <Grid.Column>
                     <Segment color='teal' inverted>
@@ -183,6 +181,7 @@ class End extends React.Component
                 <Grid.Column>
                     {this.Image_function_winner()}
                     {this.WinnerLable()}
+                    {this.Button_function()} 
                 </Grid.Column>
                 <Grid.Column>
                     {this.Stats_best_list()}
@@ -269,26 +268,23 @@ class End extends React.Component
     )
     
     Button_function = () => (
-        <div>
-            <Grid relaxed padded>
-                <Grid.Row columns={2} textAlign='center'>
-                    <Grid.Column>
-                        <Button positive>
-                            Erneut spielen
-                        </Button>  
-                    </Grid.Column>
-    
-                    <Grid.Column>
-                        <Button negative>
-                            Spiel verlassen
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>  
-        </div>
+        <Grid relaxed padded>
+            <Grid.Row columns={2} textAlign='center'>
+                <Grid.Column>
+                    <Button positive circular onClick={this.play_again}>
+                        Erneut spielen
+                    </Button>  
+                </Grid.Column>
+
+                <Grid.Column>
+                    <Button negative circular onClick={this.leave_game}>
+                        Spiel verlassen
+                    </Button>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>  
       )
     
-/***********************************************************************************/
 /***********************************************************************************/
 /***********************************************************************************/
 
