@@ -30,7 +30,9 @@ class Lobby extends Component {
     this.printReady = this.printReady.bind(this);
     this.printOwnName = this.printOwnName.bind(this);
     this.renderLoadMessage = this.renderLoadMessage.bind(this);
-    
+  }
+
+  componentDidMount(){
     this.loadPlayers();
     this.loadUser();
     this.loadLobby();
