@@ -179,6 +179,10 @@ class DataDummy extends DataBase{
 
     async joinLobby(lobby, username){
         await sleep(1000);
+        this.lobby = lobby;
+        this.userName = username;
+        this.userID = 3;
+        this.master = true;
         return [
             {
                 "UID": 3,
