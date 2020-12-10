@@ -82,6 +82,10 @@ class Start extends React.Component {
         this.setLobby = this.setLobby.bind(this);
         this.enterLobby = this.enterLobby.bind(this);
         this.getLobbies = this.getLobbies.bind(this);
+
+    }
+
+    componentDidMount(){
         this.getLobbies().catch(err => console.log('Error in getLobbies: ' + err),);
     }
 
