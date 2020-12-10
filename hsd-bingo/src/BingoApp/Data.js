@@ -21,11 +21,12 @@ class DataBase{
     async getJoinedLobbyStatus(){ throw new Error('getLobbyStatus not implemented!'); }
     async getLobbyStatus(lobby){ throw new Error('getLobbyStatus not implemented!'); }
     async start(){ throw new Error('start not implemented!'); }
-    async updateBoard(){ throw new Error('updateBoard not implemented!'); }
+    async requestBoard(){ throw new Error('requestBoard not implemented!'); }
     async makeSelection(x, y){ throw new Error('makeSelection not implemented!'); }
     async bingo(){ throw new Error('bingo not implemented!'); }
     getWinner(){ return this.winnerName; }
     getUser(){ return this.userName; }
+    getMaster(){ return this.master; }
     getLobby(){ return this.lobby; }
     getBoard(){ 
         //return this.board; 
@@ -123,10 +124,19 @@ class Data extends DataBase{
         await this.post("/start", {"UID": this.userID});
         return true;
     }
-    async updateBoard(){ 
+    async requestBoard(){ 
         if(!this.userID)
             return null;
-        this.board = await this.post("/getboard", {"UID": this.userID});
+        var board = await this.post("/getboard", {"UID": this.userID});
+        if(board.length < 25)
+            return null;
+        this.board = [
+            board.slice(0, 5),
+            board.slice(5, 10),
+            board.slice(10, 15),
+            board.slice(15, 20),
+            board.slice(20, 25)
+        ];
         return true;
     }
     async makeSelection(x, y){ 
