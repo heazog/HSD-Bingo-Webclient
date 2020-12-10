@@ -52,9 +52,9 @@ class Lobby extends Component {
     }
   }
 
-  async loadUser(){
-    let user = await MyData.getUser();
-    let master = await MyData.getMaster();
+  loadUser(){
+    let user = MyData.getUser();
+    let master = MyData.getMaster();
 
     if(user === null){
         this.setState({error: true});
@@ -63,8 +63,8 @@ class Lobby extends Component {
     }
   }
 
-  async loadLobby(){
-    let lobby = await MyData.getLobby();
+  loadLobby(){
+    let lobby = MyData.getLobby();
 
     if(lobby === null){
         this.setState({error: true});
