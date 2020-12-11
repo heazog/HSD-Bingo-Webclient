@@ -76,8 +76,6 @@ class Start extends React.Component {
 
         };
 
-
-
         this.setUsername = this.setUsername.bind(this);
         this.setLobby = this.setLobby.bind(this);
         this.enterLobby = this.enterLobby.bind(this);
@@ -85,49 +83,22 @@ class Start extends React.Component {
 
     }
 
+    //Is called, when every UI-Element is mounted
     componentDidMount(){
         this.getLobbies().catch(err => console.log('Error in getLobbies: ' + err),);
     }
 
+    //Setter for the username of the current player
     setUsername(event){
         this.setState({username: event.target.value});
     }
 
+    //Setter for the name of the choosen Lobby
     setLobby(alias){
         this.setState({checkedLobby: alias});
     }
 
-    async enterLobby(){
-
-        if(this.state.checkedLobby === ""){
-            this.setState({message: "Bitte LVA auswählen"});
-            this.setState({hideCheckMessage: false});
-        }
-        else if(this.state.username === ""){
-            this.setState({message: "Username eingeben"});
-            this.setState({hideCheckMessage: false});
-        }else{
-            this.setState({message: "Username wird geprüft"});
-            this.setState({hideCheckMessage: false});
-
-            let result = await data.joinLobby(this.state.checkedLobby,this.state.username);
-
-            if(result === null){
-                //Wartezeichen
-            }else{
-                if(result.UID === 0){
-                    //Neuen Namen wählen
-                    this.setState({message: "Username bereits vergeben"});
-                    this.setState({hideCheckMessage: false});
-                }else {
-                    this.setState({hideCheckMessage: true});
-                    this.props.goToPage(1);
-                    //Nächster screen, username + ID werden von Datenschicht weitergereicht
-                }
-            }
-        }
-    }
-
+    //Get every available lobby from the server, convert the data and save it
     async getLobbies(){
         let lobbies = await data.getLobbies();
 
@@ -135,7 +106,7 @@ class Start extends React.Component {
             this.setState({lobbies: null})
         }else{
             lobbies.forEach( l => {
-                //Convert Datastructure to HSD and ESD semester
+                //Convert data structure to HSD/ESD semester and group them
                 let semesterNo = l.name.slice(-1);
                 let LVA = {
                     alias: l.name,
@@ -143,6 +114,7 @@ class Start extends React.Component {
                     users:l.users
                 };
 
+                //Convert LVA name from alias to Display name (e.g. from ISE7 to ISE1)
                 if(semesterNo >= 7){
                     dummyLobbies[semesterNo - 1].name = "ESD Semester " + (semesterNo - 6);
                     LVA.name = l.name.slice(0,-1) + (semesterNo - 6);
@@ -161,6 +133,39 @@ class Start extends React.Component {
         }
     }
 
+    //Function to get to the next Page (Lobby)
+    async enterLobby(){
+        //Checks if all data is filled in
+        if(this.state.checkedLobby === ""){
+            this.setState({message: "Bitte LVA auswählen"});
+            this.setState({hideCheckMessage: false});
+        }
+        else if(this.state.username === ""){
+            this.setState({message: "Username eingeben"});
+            this.setState({hideCheckMessage: false});
+        }else{
+            this.setState({message: "Username wird geprüft"});
+            this.setState({hideCheckMessage: false});
+
+            let result = await data.joinLobby(this.state.checkedLobby,this.state.username);
+
+            if(result === null){
+                //Waitingmessage
+            }else{
+                if(result.UID === 0){
+                    //Username alrady taken, message to choose another
+                    this.setState({message: "Username bereits vergeben"});
+                    this.setState({hideCheckMessage: false});
+                }else {
+                    //Display next screen (Lobby), Username and ID are saved by the Datalayer
+                    this.setState({hideCheckMessage: true});
+                    this.props.goToPage(1);
+                }
+            }
+        }
+    }
+
+    //Render single LVA name plus playercount
     renderSingleLVA(lva, index){
         if(lva.users === 0){
             return(
@@ -191,7 +196,8 @@ class Start extends React.Component {
 
     }
 
-    renderLobbies(sem, index){
+    //Render a single Semester with Header
+    renderSemester(sem, index){
         if(sem.name !== "") {
             return (
                 <Grid key = {index} centered padded>
@@ -208,17 +214,19 @@ class Start extends React.Component {
         }
     }
 
+    //Render all Semesters
     renderSemesters(){
         return(
             <Grid.Row>
                 {this.state.lobbies.map((sem, index) => (
-                    this.renderLobbies(sem, index)
+                    this.renderSemester(sem, index)
                 ))}
             </Grid.Row>
 
         )
     }
 
+    //Render the Checking Name an LVA message
     renderCheckMessage(){
         return (
             <Grid centered padded>
@@ -233,6 +241,7 @@ class Start extends React.Component {
         );
     }
 
+    //Render whole page
     render(){
         return (
             <div className="Start">
