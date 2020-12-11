@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const debug = true;
+const debug = false;
 const SERVER = "http://193.170.192.202:8080";
 
 class DataBase{
@@ -24,6 +24,7 @@ class DataBase{
     async requestBoard(){ throw new Error('requestBoard not implemented!'); }
     async makeSelection(x, y){ throw new Error('makeSelection not implemented!'); }
     async bingo(){ throw new Error('bingo not implemented!'); }
+    async highscores(){ throw new Error('highscores not implemented!'); }
     getWinner(){ return this.winnerName; }
     getUser(){ return this.userName; }
     getMaster(){ return this.master; }
@@ -108,15 +109,15 @@ class Data extends DataBase{
     async getPlayers(){ 
         if(!this.lobby)
             return null;
-        return await this.post("/getplayers", {"lobby": this.lobby});
+        return await this.get("/getplayers?lobby="+this.lobby);
     }
     async getJoinedLobbyStatus(){
         if(!this.lobby)
             return null;
-        return await this.post("/getlobbystatus", {"lobby": this.lobby});
+        return await this.get("/getlobbystatus?lobby="+this.lobby);
     }
     async getLobbyStatus(lobby){
-        return await this.post("/getlobbystatus", {"lobby": lobby});
+        return await this.get("/getlobbystatus?lobby="+lobby);
     }
     async start(){
         if(!this.userID)
@@ -127,7 +128,7 @@ class Data extends DataBase{
     async requestBoard(){ 
         if(!this.userID)
             return null;
-        var board = await this.post("/getboard", {"UID": this.userID});
+        var board = await this.get("/getboard?UID="+this.userID);
         if(board.length < 25)
             return null;
         this.board = [
@@ -151,6 +152,9 @@ class Data extends DataBase{
         var ret = await this.post("/bingo", {"UID": this.userID});
         this.winnerName = ret.winner;
         return ret;
+    }
+    async highscores(){ 
+        return await this.get("/highscores");
     }
 }
 
@@ -271,6 +275,19 @@ class DataDummy extends DataBase{
         await sleep(1000);
         return {
             "winner": null
+        }
+    }
+    async highscores(){
+        await sleep(1000);
+        return { 
+            "bestPlayers": [
+                {"Name": "Spieler 1", "Score": 5}, 
+                {"Name": "Spieler 2", "Score": 10}
+            ],
+            "quickestLobbies": [
+                {"lobby": "ISE7", "gametime": 100},
+                {"lobby": "ISE7", "gametime": 100}
+            ]
         }
     }
 }

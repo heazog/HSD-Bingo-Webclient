@@ -115,7 +115,7 @@ class Start extends React.Component {
             if(result === null){
                 //Wartezeichen
             }else{
-                if(result[0].UID === 0){
+                if(result.UID === 0){
                     //Neuen Namen wählen
                     this.setState({message: "Username bereits vergeben"});
                     this.setState({hideCheckMessage: false});
