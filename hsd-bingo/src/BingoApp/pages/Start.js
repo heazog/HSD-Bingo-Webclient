@@ -226,7 +226,7 @@ class Start extends React.Component {
         )
     }
 
-    //Render the Checking Name an LVA message
+    //Render the Checking Name and LVA message
     renderCheckMessage(){
         return (
             <Grid centered padded>
@@ -248,7 +248,7 @@ class Start extends React.Component {
                 <h1 align="center" >HSD - BINGO!</h1>
                 {this.renderCheckMessage()}
                 <Input  align="center" onChange={this.setUsername} focus placeholder='Benutzername' />
-                <Button color='red' floated='right' onClick={this.enterLobby} circular >Absenden</Button>
+                <Button color='green' floated='right' onClick={this.enterLobby} circular >Absenden</Button>
                 {this.renderSemesters()}
             </div>
         );

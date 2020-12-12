@@ -1,50 +1,13 @@
 import React from 'react';
-import {Grid, Message, Button} from 'semantic-ui-react'
+import {Grid, Message, Button, Header} from 'semantic-ui-react'
 import data from "../Data";
 import Icon from "semantic-ui-react/dist/commonjs/elements/Icon";
 
 
-//TODO: Columns vertikal centern (frag den Herzog)
 const checkInterval = 1000;
 
-/*const placeholderTerms = [
-    [
-        "wort11",
-        "wort12",
-        "wort13",
-        "wort14",
-        "wort15"
-    ],
-    [
-        "wort21",
-        "wort22",
-        "wort23",
-        "wort24",
-        "wort25"
-    ],
-    [
-        "wort31",
-        "wort32",
-        "wort33",
-        "wort34",
-        "wort35"
-    ],
-    [
-        "wort41",
-        "wort42",
-        "wort43",
-        "wort44",
-        "wort45"
-    ],
-    [
-        "wort51",
-        "wort52",
-        "wort53",
-        "wort54",
-        "wort55"
-    ]
-];*/
 
+//HTML of single Field
 function Field(props) {
     return (
         <Grid.Column className="board-column" color={props.color} onClick={props.onClick}>
@@ -67,12 +30,7 @@ class Game extends React.Component {
             hideRejectMessage: true
         };
 
-        //this.setTerms = this.setTerms.bind(this);
-        /*this.setTerms().catch(
-            err => console.log('Error in setTerms: ' + err),
-        );*/
-
-        //setInterval(function(){ this.checkBingo();}, checkInterval);
+        this.leaveGame = this.leaveGame.bind(this);
 
         setInterval(() => {
             this.checkBingo().catch(
@@ -82,6 +40,7 @@ class Game extends React.Component {
 
     }
 
+    //Check if somebody has won the game
     async checkBingo(){
         let winner = await data.bingo();
 
@@ -93,6 +52,7 @@ class Game extends React.Component {
         }
     }
 
+    //Check clicked Term
     async handleClick(x,y) {
         this.setState({hideCheckMessage: false});
         this.setState({currentTerm: this.state.terms[x][y]});
@@ -104,8 +64,7 @@ class Game extends React.Component {
             this.setState({hideCheckMessage: true});
         }
         else{
-            //Pop-up
-            //Begriff wurde abgelehnt
+            //Pop-up: Term was rejected
         }
 
         this.setState({
@@ -113,17 +72,13 @@ class Game extends React.Component {
         });
     }
 
-    /*async setTerms(){
-        let terms = await data.getBoard();
+    //Leave the game towards Startscreen
+    leaveGame() {
+        //change screen to start
+        this.props.goToPage(0);
+    }
 
-        if(terms === null){
-            this.state.terms = null;
-        }else{
-            this.state.terms = terms;
-        }
-    }*/
-
-
+    //Render a Single Field and initialize Array of clicked items
     renderField(x,y) {
         for(let y=0; y< this.state.terms.length; y++) {
             let temp = [];
@@ -142,6 +97,7 @@ class Game extends React.Component {
         );
     }
 
+    //Render the checking clicked field message
     renderCheckMessage(){
         return (
             <Grid centered padded>
@@ -158,6 +114,7 @@ class Game extends React.Component {
         );
     }
 
+    //Render the term reject message for future usecases
     renderRejectMessage(){
         return (
             <Grid centered padded>
@@ -174,11 +131,25 @@ class Game extends React.Component {
         );
     }
 
+    GridHeader = () => (
+        <Grid divided='vertically'>
+            <Grid.Row columns={2}>
+                <Grid.Column>
+                    <Header as='h1'>{this.state.lobby}</Header>
+                </Grid.Column>
+                <Grid.Column>
+                    <Button color='red' floated='right' circular onClick={this.leaveGame}>Leave Game</Button>
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
+    );
+
+    //Render whole page
     render(){
         return (
             <div className="game">
 
-                <h1 align="center" >{this.state.lobby}</h1>
+                {this.GridHeader()}
 
                 <Grid columns={5} padded>
                     {this.renderField(0,0)}
