@@ -19,19 +19,20 @@ class DataBase{
     async joinLobby(lobby, username){ throw new Error('joinLobby not implemented!'); }
     async getPlayers(){ throw new Error('getPlayers not implemented!'); }
     async getJoinedLobbyStatus(){ throw new Error('getLobbyStatus not implemented!'); }
-    async getLobbyStatus(lobby){ throw new Error('getLobbyStatus not implemented!'); }
+    async getLobbyStatus(){ throw new Error('getLobbyStatus not implemented!'); }
     async start(){ throw new Error('start not implemented!'); }
     async requestBoard(){ throw new Error('requestBoard not implemented!'); }
     async makeSelection(x, y){ throw new Error('makeSelection not implemented!'); }
     async bingo(){ throw new Error('bingo not implemented!'); }
     async highscores(){ throw new Error('highscores not implemented!'); }
+    async disconnect(){ throw new Error('disconnect not implemented!'); }
     getWinner(){ return this.winnerName; }
     getUser(){ return this.userName; }
     getMaster(){ return this.master; }
     getLobby(){ return this.lobby; }
     getBoard(){ 
-        //return this.board; 
-        return [
+        return this.board;
+        /*return [
             [
                 "Ähm",
                 "Also",
@@ -67,7 +68,7 @@ class DataBase{
                 "Spektrum",
                 "Symbolperiode"
             ]
-        ];
+        ];*/
     }
 };
 
@@ -116,8 +117,8 @@ class Data extends DataBase{
             return null;
         return await this.get("/getlobbystatus?lobby="+this.lobby);
     }
-    async getLobbyStatus(lobby){
-        return await this.get("/getlobbystatus?lobby="+lobby);
+    async getLobbyStatus(){
+        return await this.get("/getlobbystatus?lobby="+this.lobby);
     }
     async start(){
         if(!this.userID)
@@ -131,6 +132,7 @@ class Data extends DataBase{
         var board = await this.get("/getboard?UID="+this.userID);
         if(board.length < 25)
             return null;
+        console.log(board);
         this.board = [
             board.slice(0, 5),
             board.slice(5, 10),
@@ -138,6 +140,7 @@ class Data extends DataBase{
             board.slice(15, 20),
             board.slice(20, 25)
         ];
+        console.log(this.board);
         return true;
     }
     async makeSelection(x, y){ 
@@ -147,14 +150,21 @@ class Data extends DataBase{
         return true;
     }
     async bingo(){ 
-        if(!this.userID)
+        if(!this.lobby)
             return null;
-        var ret = await this.post("/bingo", {"UID": this.userID});
+        var ret = await this.get("/bingo?lobby="+this.lobby);
         this.winnerName = ret.winner;
         return ret;
     }
     async highscores(){ 
         return await this.get("/highscores");
+    }
+    async disconnect(){
+        if(!this.lobby)
+            return null;
+        console.log({"lobby": this.lobby, "uid": this.userID});
+        var ret = await this.post("/disconnect", {"lobby": this.lobby, "UID": this.userID});
+        return ret;
     }
 }
 
@@ -215,7 +225,7 @@ class DataDummy extends DataBase{
             "gametime": "34"
         };
     }
-    async getLobbyStatus(lobby){
+    async getLobbyStatus(){
         await sleep(1000);
         return {
             "gametime": "99"

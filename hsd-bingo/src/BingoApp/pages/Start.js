@@ -105,6 +105,7 @@ class Start extends React.Component {
         if(lobbies === null){
             this.setState({lobbies: null})
         }else{
+            //TODO: Auf null setzen und ui elemente löschen
             lobbies.forEach( l => {
                 //Convert data structure to HSD/ESD semester and group them
                 let semesterNo = l.name.slice(-1);
@@ -158,6 +159,7 @@ class Start extends React.Component {
                     this.setState({hideCheckMessage: false});
                 }else {
                     //Display next screen (Lobby), Username and ID are saved by the Datalayer
+                    console.log(result.UID);
                     this.setState({hideCheckMessage: true});
                     this.props.goToPage(1);
                 }

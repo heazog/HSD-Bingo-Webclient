@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Message, Container, Header, Button, Table, Icon, Grid } from 'semantic-ui-react'
-import MyData from '../Data'
+import data from '../Data'
 
 const checkInterval = 1000;
 
@@ -29,7 +29,13 @@ class Lobby extends Component {
     this.leaveLobby = this.leaveLobby.bind(this);
     this.printReady = this.printReady.bind(this);
     this.printOwnName = this.printOwnName.bind(this);
-    this.renderLoadMessage = this.renderLoadMessage.bind(this);
+      this.renderLoadMessage = this.renderLoadMessage.bind(this);
+
+      setInterval(() => {
+          this.checkLobbyStatus().catch(
+              err => console.log('Error in checkLobbyStatus: ' + err),
+          );
+      }, checkInterval);
   }
 
   componentDidMount(){
@@ -41,7 +47,7 @@ class Lobby extends Component {
   async loadPlayers(){
     while (this.state.started === false)
     {
-      let players_list = await MyData.getPlayers();
+      let players_list = await data.getPlayers();
       
       if(players_list === null){
           this.setState({error: true});
@@ -53,8 +59,8 @@ class Lobby extends Component {
   }
 
   loadUser(){
-    let user = MyData.getUser();
-    let master = MyData.getMaster();
+    let user = data.getUser();
+    let master = data.getMaster();
 
     if(user === null){
         this.setState({error: true});
@@ -64,7 +70,7 @@ class Lobby extends Component {
   }
 
   loadLobby(){
-    let lobby = MyData.getLobby();
+    let lobby = data.getLobby();
 
     if(lobby === null){
         this.setState({error: true});
@@ -76,25 +82,31 @@ class Lobby extends Component {
 
   toggleReady() {
     this.setState((prevState) => ({ ready: !prevState.ready }))
-    if(this.state.master === true)
-    {
+    //if(this.state.master === true)
+    //{
       this.startGame();
-    }
+    //}
   }
 
-  async startGame(){
-    this.setState({started: true});
-    let ret = false 
-    while(!ret)
-    {
-      ret = await MyData.requestBoard();
-    }
-    //change screen to game
-    this.props.goToPage(2)
-  }
+      async startGame(){
+        this.setState({started: true});
+        await data.start();
+      }
 
-  leaveLobby() {
+    async checkLobbyStatus(){
+        let ret = await data.getLobbyStatus();
+
+        if(ret.gametime > 0){
+            //change screen to game
+            clearInterval(this.checkLobbyStatus());
+            await data.requestBoard();
+            this.props.goToPage(2)
+        }
+    }
+
+  async leaveLobby() {
     //change screen to start
+    await data.disconnect();
     this.props.goToPage(0)
   }
 

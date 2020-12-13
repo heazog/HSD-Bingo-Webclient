@@ -22,7 +22,7 @@ class Game extends React.Component {
         super(props);
 
         this.state = {
-            lobby: data.getLobby(),
+            lobby: data.getLobby(),//Erst dummy schreiben
             terms: data.getBoard(),
             active: [],
             currentTerm: null,
@@ -47,6 +47,8 @@ class Game extends React.Component {
         //If there is a winner, call Page 4
         if(winner !== null){
             if(winner.winner !== null){
+                await data.disconnect();
+                clearInterval(this.checkBingo());
                 this.props.goToPage(3);
             }
         }
@@ -54,6 +56,7 @@ class Game extends React.Component {
 
     //Check clicked Term
     async handleClick(x,y) {
+        console.log(x,y);
         this.setState({hideCheckMessage: false});
         this.setState({currentTerm: this.state.terms[x][y]});
         let allowed = await data.makeSelection(x,y);
@@ -73,13 +76,15 @@ class Game extends React.Component {
     }
 
     //Leave the game towards Startscreen
-    leaveGame() {
+    async leaveGame() {
         //change screen to start
+        await data.disconnect();
         this.props.goToPage(0);
     }
 
     //Render a Single Field and initialize Array of clicked items
     renderField(x,y) {
+
         for(let y=0; y< this.state.terms.length; y++) {
             let temp = [];
             for(let x=0; x< this.state.terms[0].length; x++) {
