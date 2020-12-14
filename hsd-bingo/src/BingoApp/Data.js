@@ -117,8 +117,8 @@ class Data extends DataBase{
             return null;
         return await this.get("/getlobbystatus?lobby="+this.lobby);
     }
-    async getLobbyStatus(){
-        return await this.get("/getlobbystatus?lobby="+this.lobby);
+    async getLobbyStatus(lobby){
+        return await this.get("/getlobbystatus?lobby="+lobby);
     }
     async start(){
         if(!this.userID)

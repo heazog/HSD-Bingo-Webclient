@@ -94,7 +94,7 @@ class Lobby extends Component {
       }
 
     async checkLobbyStatus(){
-        let ret = await data.getLobbyStatus();
+        let ret = await data.getJoinedLobbyStatus();
 
         if(ret.gametime > 0){
             //change screen to game

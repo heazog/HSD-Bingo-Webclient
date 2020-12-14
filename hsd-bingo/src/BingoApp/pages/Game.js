@@ -48,6 +48,7 @@ class Game extends React.Component {
         if(winner !== null){
             if(winner.winner !== null){
                 await data.disconnect();
+                console.log("Bingo");
                 clearInterval(this.checkBingo());
                 this.props.goToPage(3);
             }
