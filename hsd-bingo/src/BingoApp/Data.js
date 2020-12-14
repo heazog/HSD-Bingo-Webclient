@@ -44,7 +44,7 @@ class DataBase{
         let semesterNo = lva.slice(-1);
         if(semesterNo >= 7){
             return lva.slice(0,-1) + (semesterNo - 6);
-        }else if(semesterNo === 0){ // Semester 10
+        }else if(semesterNo === "0"){ // Semester 10
             return lva.slice(0,-2) + 4;
         }else{
             return lva.slice(0,-1) + semesterNo;
