@@ -2,7 +2,7 @@ import React from 'react';
 import data from '../Data';
 import { Header, Button, Image, Table, Grid, Segment, Container} from 'semantic-ui-react';
 
-/* CONSTANTS */
+/*  Konstanten für Gewinner oder Verlierer Screen*/
 const winner_links = [  'https://media2.giphy.com/media/l4hLwMmFVBOAKF3EI/giphy.gif',
                         'https://media2.giphy.com/media/3o7TKF5DnsSLv4zVBu/giphy.gif',
                         'https://media4.giphy.com/media/9xt1MUZqkneFiWrAAD/giphy.gif?cid=ecf05e47ok4e9gf3hr29te6xlp38lrdt3rmaw9ykmjfq6f1u&rid=giphy.gif',
@@ -45,6 +45,7 @@ class End extends React.Component
         this.get_Winner();
     }
 
+    //Get played subject. For example ISE1
     async get_subject(){
         let lobby_name = await data.getLobby();
 
@@ -65,6 +66,7 @@ class End extends React.Component
         }
     }
 
+    //Who won the game?
     async get_Winner(){
         let winner = await data.getWinner();
 
@@ -75,16 +77,19 @@ class End extends React.Component
         }
     }
 
+    //Back to Lobby Screen
     play_again(){
         this.props.goToPage(1);
     }
 
+    //Back to starting page
     leave_game(){
         this.props.goToPage(0);
     }
       
 /***********************************************************************************/
 /***********************************************************************************/
+    //Creates Header for our Endpage. Inserts the played subject dynamicly
     Header_function = () => (
         <Grid columns='equal' padded >
             <Grid.Row textAlign='center'>
@@ -102,14 +107,17 @@ class End extends React.Component
         </Grid>
       )
     
+    //Inserts the Winner gif. This can only see players who won the bingo game
     Image_function_winner = () => (
         <Image src={winner_links[Math.floor(Math.random()*winner_links.length)]} fluid />
     )
     
+    //All losers will see the pre defined loser gifs.
     Image_function_loser = () => (
         <Image src={loser_links[Math.floor(Math.random()*loser_links.length)]} fluid />
     )
     
+    //Statistics on who our all time best players are.
     Stats_best_list = () => (
         <Table color={'teal'} key={'teal1'}>
             <Table.Header>
@@ -142,6 +150,7 @@ class End extends React.Component
         </Table>
     )
     
+    //Statistics on what the fastest bingo times were.
     Stats_fastest_games = () => (
         <Table color={'teal'} key={'teal2'}>
             <Table.Header>
@@ -174,10 +183,11 @@ class End extends React.Component
         </Table>
     )
       
-    
+    //Creates the Grid for the Player who won the game. Here we will insert the Winner Image function
+    //that only Bingo-winners can sen
     Grid_winner = () => (
         <Grid padded>
-            <Grid.Row columns={2} textAlign='center' only='computer'> {/* padded is bei Row ned erlaubt */}
+            <Grid.Row columns={2} textAlign='center' only='computer'> {/*Grid for desktop usage*/}
                 <Grid.Column>
                     {this.Image_function_winner()}
                     {this.WinnerLable()}
@@ -189,7 +199,7 @@ class End extends React.Component
                 </Grid.Column>
             </Grid.Row>
 
-            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>{/*Grid for mobile usage*/}
                 <Grid.Column>
                     {this.Image_function_winner()}
                 </Grid.Column>
@@ -215,10 +225,11 @@ class End extends React.Component
         </Grid>
     )
     
+    //Creates the Grid for all losers of the Bing-Game.
     Grid_loser = () => (
         <div>
             <Grid padded>
-                <Grid.Row columns={2} textAlign='center' only='computer'>
+                <Grid.Row columns={2} textAlign='center' only='computer'> {/*Grid for desktop usage*/}
                     <Grid.Column>
                         {this.Image_function_loser()}
                         {this.WinnerLable()}
@@ -230,7 +241,7 @@ class End extends React.Component
                     </Grid.Column>
                 </Grid.Row>
     
-                <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                <Grid.Row columns={1} textAlign='center' only='tablet mobile'> {/*Grid for mobile usage*/}
                     <Grid.Column>
                         {this.Image_function_loser()}
                     </Grid.Column>
@@ -263,10 +274,12 @@ class End extends React.Component
         </div>
     )
     
+    //Writes the Name of our winner onto the screen
     WinnerLable = () => (
         <Header as='h1'>"{this.state.name_winner}" hat das Spiel gewonnen!</Header>
     )
     
+    //Creates two buttons for leaving the game or palying again
     Button_function = () => (
         <Grid relaxed padded>
             <Grid.Row columns={2} textAlign='center'>
@@ -291,11 +304,13 @@ class End extends React.Component
     render()
     { 
         /*WINNER*/
+        //here we decide if the user has won the game or not. If he won he will be
+        //really lucky to see our rare winner gifs.
         if(this.state.name === this.state.name_winner)
         {
             return (
                 <Container className="End">
-                    {this.Header_function()}
+                    {this.Header_function()} {/*Create Header for Endpage*/}
                     {this.Grid_winner()}
                 </Container>
                 );
