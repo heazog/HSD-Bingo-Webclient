@@ -300,6 +300,10 @@ class DataDummy extends DataBase{
             ]
         }
     }
+    async disconnect(){
+        await sleep(1000);
+        return true;
+    }
 }
 
 

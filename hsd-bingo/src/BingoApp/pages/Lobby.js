@@ -31,7 +31,7 @@ class Lobby extends Component {
     this.printOwnName = this.printOwnName.bind(this);
       this.renderLoadMessage = this.renderLoadMessage.bind(this);
 
-      setInterval(() => {
+      this.checkLobbyStatusPoll = setInterval(() => {
           this.checkLobbyStatus().catch(
               err => console.log('Error in checkLobbyStatus: ' + err),
           );
@@ -43,6 +43,7 @@ class Lobby extends Component {
     this.loadUser();
     this.loadLobby();
   }
+
 
   async loadPlayers(){
     while (this.state.started === false)
@@ -88,17 +89,19 @@ class Lobby extends Component {
     //}
   }
 
-      async startGame(){
-        this.setState({started: true});
-        await data.start();
-      }
+  async startGame(){
+    this.setState({started: true});
+    await data.start();
+  }
 
     async checkLobbyStatus(){
         let ret = await data.getJoinedLobbyStatus();
+        console.log("await JoinedLobbyStatus");
+
 
         if(ret.gametime > 0){
             //change screen to game
-            clearInterval(this.checkLobbyStatus());
+            clearInterval(this.checkLobbyStatusPoll);
             await data.requestBoard();
             this.props.goToPage(2)
         }
@@ -106,7 +109,8 @@ class Lobby extends Component {
 
   async leaveLobby() {
     //change screen to start
-    await data.disconnect();
+      //clearInterval(this.checkLobbyStatusPoll);
+      await data.disconnect();
     this.props.goToPage(0)
   }
 

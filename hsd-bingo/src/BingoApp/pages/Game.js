@@ -32,24 +32,25 @@ class Game extends React.Component {
 
         this.leaveGame = this.leaveGame.bind(this);
 
-        setInterval(() => {
+        this.checkBingoPoll = setInterval(() => {
             this.checkBingo().catch(
                 err => console.log('Error in checkBingo: ' + err),
             );
         }, checkInterval);
 
+        console.log("Constructor call");
     }
 
     //Check if somebody has won the game
     async checkBingo(){
         let winner = await data.bingo();
+        console.log("await Bingo");
 
         //If there is a winner, call Page 4
         if(winner !== null){
             if(winner.winner !== null){
                 await data.disconnect();
-                console.log("Bingo");
-                clearInterval(this.checkBingo());
+                clearInterval(this.checkBingoPoll);
                 this.props.goToPage(3);
             }
         }
@@ -79,6 +80,7 @@ class Game extends React.Component {
     //Leave the game towards Startscreen
     async leaveGame() {
         //change screen to start
+        clearInterval(this.checkBingoPoll);
         await data.disconnect();
         this.props.goToPage(0);
     }
@@ -86,21 +88,23 @@ class Game extends React.Component {
     //Render a Single Field and initialize Array of clicked items
     renderField(x,y) {
 
-        for(let y=0; y< this.state.terms.length; y++) {
-            let temp = [];
-            for(let x=0; x< this.state.terms[0].length; x++) {
-                temp.push(false);
+        if(this.state.terms !== null){
+            for(let y=0; y< this.state.terms.length; y++) {
+                let temp = [];
+                for(let x=0; x< this.state.terms[0].length; x++) {
+                    temp.push(false);
+                }
+                this.state.active.push(temp);
             }
-            this.state.active.push(temp);
-        }
 
-        return (
-            <Field
-                value={this.state.terms[x][y]}
-                onClick={() => this.handleClick(x,y)}
-                color={this.state.active[x][y] ? "red": "teal"}
-            />
-        );
+            return (
+                <Field
+                    value={this.state.terms[x][y]}
+                    onClick={() => this.handleClick(x,y)}
+                    color={this.state.active[x][y] ? "red": "teal"}
+                />
+            );
+        }
     }
 
     //Render the checking clicked field message
