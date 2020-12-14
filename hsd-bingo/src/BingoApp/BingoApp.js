@@ -10,20 +10,24 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
+
+        // initialize state to page 0 (Start)
         this.state = {
-          page: 0,
-          error: false
+          page: 0
         };
 
+        // bind setPage method to 'this' class
         this.setPage = this.setPage.bind(this);
       }
     
 
     setPage(num){
+        // set page to num
         this.setState({page: num});
     }
 
     render(){
+        // create page variable with content of current page
         var page = null;
         switch(this.state.page){
             case 0: 
@@ -43,11 +47,7 @@ class App extends React.Component {
                 break;
         }
 
-        // IHR BENÖTIGT ZUM NAVIGIEREN:
-        // this.props.goToPage(SEITE)
-        // z.B.:
-        // <Button onClick={() => this.props.goToPage(1)}>next</Button>
-
+        // render App Cointainer with selected page
         return (
             <Container className="BingoApp">
                 <Button onClick={() => this.setPage(0)}>0</Button>
