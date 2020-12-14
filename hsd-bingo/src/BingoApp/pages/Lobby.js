@@ -19,7 +19,6 @@ class Lobby extends Component {
         this.state = {
             lobby: "",
             name: "",
-            id: "",
             master: false,
             ready: true,
             readyState: PlayerState.Waiting,
@@ -106,13 +105,13 @@ class Lobby extends Component {
     // load own name, id and master state
     loadUser(){
         let user = data.getUser();
-        let userID = data.getUserID();
+        //let userID = data.getUserID();
         let master = data.getMaster();
 
         if(user === null){
             this.setState({error: true});
         }else{
-            this.setState({name: user, id: userID, master: master, error: false});
+            this.setState({name: user, master: master, error: false});
         }
     }
 
