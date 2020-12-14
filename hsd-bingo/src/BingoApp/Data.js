@@ -178,7 +178,7 @@ class DataDummy extends DataBase{
         for(let i=0;i<15; i++){
 
             let LVA = {
-                "name": "LVA" + (1 + Math.round(Math.random()*8)),
+                "name": "LVA" + (1 + Math.round(Math.random()*10)),
                 "users": ((Math.round(Math.random()*3) < 2) ? Math.round(Math.random()*40) : 0)
             };
 

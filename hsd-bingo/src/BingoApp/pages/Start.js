@@ -54,13 +54,11 @@ const dummyLobbies = [
         "alias": "",
         "name": "",
         "Lvas": []
-    },
-    {
-        "alias": "",
-        "name": "",
-        "Lvas": []
     }
 ];
+
+const checkInterval = 5000;
+
 
 class Start extends React.Component {
 
@@ -68,7 +66,7 @@ class Start extends React.Component {
         super(props);
 
         this.state = {
-            lobbies: dummyLobbies,
+            lobbies: [],
             checkedLobby: "",
             username: "",
             hideCheckMessage: true,
@@ -80,12 +78,21 @@ class Start extends React.Component {
         this.setLobby = this.setLobby.bind(this);
         this.enterLobby = this.enterLobby.bind(this);
         this.getLobbies = this.getLobbies.bind(this);
-
     }
 
     //Is called, when every UI-Element is mounted
     componentDidMount(){
         this.getLobbies().catch(err => console.log('Error in getLobbies: ' + err),);
+        this.getLobbiesPoll = setInterval(() => {
+            this.getLobbies().catch(
+                err => console.log('Error in getLobbies: ' + err),
+            );
+        }, checkInterval);
+
+        /*this.getLobbiesPoll = setTimeout(this.getLobbies().catch(
+            err => console.log('Error in getLobbies: ' + err),
+        ), checkInterval);*/
+
     }
 
     //Setter for the username of the current player
@@ -100,38 +107,50 @@ class Start extends React.Component {
 
     //Get every available lobby from the server, convert the data and save it
     async getLobbies(){
+        //clearTimeout(this.getLobbiesPoll);
+        console.log("Polllobbies");
+
+        dummyLobbies.forEach(l => {
+            l.alias = "";
+            l.name = "";
+            l.Lvas = [];
+        });
+
         let lobbies = await data.getLobbies();
 
         if(lobbies === null){
             this.setState({lobbies: null})
         }else{
-            //TODO: Auf null setzen und ui elemente löschen
+            let tempLobbies = dummyLobbies;
+
             lobbies.forEach( l => {
                 //Convert data structure to HSD/ESD semester and group them
                 let semesterNo = l.name.slice(-1);
+                if(semesterNo === "0"){
+                    semesterNo = l.name.slice(-2);
+                }
+
                 let LVA = {
                     alias: l.name,
-                    name: "",
+                    name: data.convertLVA(l.name),
                     users:l.users
                 };
 
                 //Convert LVA name from alias to Display name (e.g. from ISE7 to ISE1)
                 if(semesterNo >= 7){
-                    dummyLobbies[semesterNo - 1].name = "ESD Semester " + (semesterNo - 6);
-                    LVA.name = l.name.slice(0,-1) + (semesterNo - 6);
-                }else if(semesterNo === 0){
-                    semesterNo = 1;
-                    dummyLobbies[0].name = "ESD Semester 10";
+                    tempLobbies[semesterNo - 1].name = "ESD Semester " + (semesterNo - 6);
                 }else{
-                    dummyLobbies[semesterNo - 1].name = "HSD Semester " + semesterNo;
-                    LVA.name = l.name.slice(0,-1) + semesterNo;
+                    tempLobbies[semesterNo - 1].name = "HSD Semester " + semesterNo;
                 }
 
-                dummyLobbies[semesterNo - 1].Lvas = dummyLobbies[semesterNo - 1].Lvas.concat(LVA);
+                tempLobbies[semesterNo - 1].Lvas = tempLobbies[semesterNo - 1].Lvas.concat(LVA);
             });
-
-            this.setState({lobbies: dummyLobbies});
+            this.setState({lobbies: tempLobbies});
         }
+
+        /*setTimeout(this.getLobbies().catch(
+            err => console.log('Error in getLobbies: ' + err),
+        ), checkInterval);*/
     }
 
     //Function to get to the next Page (Lobby)
@@ -160,6 +179,7 @@ class Start extends React.Component {
                 }else {
                     //Display next screen (Lobby), Username and ID are saved by the Datalayer
                     console.log(result.UID);
+                    clearInterval(this.getLobbiesPoll);
                     this.setState({hideCheckMessage: true});
                     this.props.goToPage(1);
                 }
