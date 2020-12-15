@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Header, Input, Grid, Label, Message } from 'semantic-ui-react';
+import {Button, Header, Input, Grid, Label, Message, Image} from 'semantic-ui-react';
 import data from "../Data";
+import logo from "../../logo.png"
 
 //TODO: Absturz bei LVA10
 
@@ -57,7 +58,7 @@ const dummyLobbies = [
     }
 ];
 
-const checkInterval = 5000;
+const checkInterval = 2000;
 
 
 class Start extends React.Component {
@@ -239,12 +240,13 @@ class Start extends React.Component {
     //Render all Semesters
     renderSemesters(){
         return(
-            <Grid.Row>
-                {this.state.lobbies.map((sem, index) => (
-                    this.renderSemester(sem, index)
-                ))}
-            </Grid.Row>
-
+            <Grid padded centered>
+                <Grid.Row>
+                    {this.state.lobbies.map((sem, index) => (
+                        this.renderSemester(sem, index)
+                    ))}
+                </Grid.Row>
+            </Grid>
         )
     }
 
@@ -267,11 +269,23 @@ class Start extends React.Component {
     render(){
         return (
             <div className="Start">
-                <h1 align="center" >HSD - BINGO!</h1>
-                {this.renderCheckMessage()}
+
                 <Input  align="center" onChange={this.setUsername} focus placeholder='Benutzername' />
                 <Button color='green' floated='right' onClick={this.enterLobby} circular >Absenden</Button>
+
+                {this.renderCheckMessage()}
+
+                <Grid align="middle">
+                    <Grid.Column>
+                        <Image src={logo} size='small' />
+                    </Grid.Column>
+                </Grid>
+
+
+
                 {this.renderSemesters()}
+
+
             </div>
         );
     }

@@ -4,7 +4,7 @@ import data from "../Data";
 import Icon from "semantic-ui-react/dist/commonjs/elements/Icon";
 
 
-const checkInterval = 1000;
+const checkInterval = 2000;
 
 
 //HTML of single Field
@@ -44,11 +44,12 @@ class Game extends React.Component {
     //Check if somebody has won the game
     async checkBingo(){
         let winner = await data.bingo();
-        console.log("await Bingo");
+        console.log("await Bingo: ");
+        console.log(winner);
 
         //If there is a winner, call Page 4
-        if(winner !== null){
-            if(winner.winner !== null){
+        if(winner !== null && winner !== false){
+            if(winner.winner !== null && winner.winner !== false){
                 await data.disconnect();
                 clearInterval(this.checkBingoPoll);
                 this.props.goToPage(3);
@@ -145,7 +146,7 @@ class Game extends React.Component {
         <Grid divided='vertically'>
             <Grid.Row columns={2}>
                 <Grid.Column>
-                    <Header as='h1'>{this.state.lobby}</Header>
+                    <Header as='h1'>{data.convertLVA(this.state.lobby)}</Header>
                 </Grid.Column>
                 <Grid.Column>
                     <Button color='red' floated='right' circular onClick={this.leaveGame}>Leave Game</Button>

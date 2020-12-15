@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Container, Divider } from 'semantic-ui-react';
+import { Button, Container } from 'semantic-ui-react';
 import Start from './pages/Start'
 import Lobby from './pages/Lobby'
 import Game from './pages/Game'
@@ -54,7 +54,6 @@ class App extends React.Component {
                 <Button onClick={() => this.setPage(1)}>1</Button>
                 <Button onClick={() => this.setPage(2)}>2</Button>
                 <Button onClick={() => this.setPage(3)}>3</Button>
-                <Divider horizontal>Game</Divider>
                 <br/>
                 {page}                
             </Container>
