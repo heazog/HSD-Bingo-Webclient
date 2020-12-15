@@ -1,11 +1,23 @@
-import { render, screen } from '@testing-library/react';
 import Game from './Game';
-import data from "../Data";
+import {act} from "react-dom/cjs/react-dom-test-utils.development";
+import ReactDOM from "react-dom";
+import React from "react";
 
 test('Game UI Test', () => {
-  render(<Game />);
-  const heading = screen.getByText(/ISE1/i);
-  expect(heading).toBeInTheDocument();
+    let container = document.createElement('div');
+    document.body.appendChild(container);
+
+    act(() => {
+        ReactDOM.render(<Game />, container);
+    });
+
+    //Button
+    const button = container.querySelector('button');
+    expect(button.innerHTML).toBe('Spiel verlassen');
+
+    //Button
+    const header = container.querySelector('h1');
+    expect(header.innerHTML).toBe('');
 
 
 });

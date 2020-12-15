@@ -223,7 +223,7 @@ class Start extends React.Component {
     renderSemester(sem, index){
         if(sem.name !== "") {
             return (
-                <Grid key = {index} centered padded>
+                <Grid className='Semester' key = {index} centered padded>
                     <Header as='h3' style={{marginTop: 0.5 + "em", marginBottom: 0}}>
                         {sem.name}
                     </Header>
@@ -240,7 +240,7 @@ class Start extends React.Component {
     //Render all Semesters
     renderSemesters(){
         return(
-            <Grid padded centered>
+            <Grid className="Semesters" padded centered>
                 <Grid.Row>
                     {this.state.lobbies.map((sem, index) => (
                         this.renderSemester(sem, index)
@@ -275,16 +275,13 @@ class Start extends React.Component {
 
                 {this.renderCheckMessage()}
 
-                <Grid align="middle">
+                <Grid className="IconContainer" align="middle">
                     <Grid.Column>
                         <Image src={logo} size='small' />
                     </Grid.Column>
                 </Grid>
 
-
-
                 {this.renderSemesters()}
-
 
             </div>
         );

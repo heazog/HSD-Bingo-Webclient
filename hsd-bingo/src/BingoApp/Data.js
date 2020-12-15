@@ -41,13 +41,15 @@ class DataBase{
 
     // Convert LVA name from alias to Display name (e.g. from ISE7 to ISE1)
     convertLVA(lva){
-        let semesterNo = lva.slice(-1);
-        if(semesterNo >= 7){
-            return lva.slice(0,-1) + (semesterNo - 6);
-        }else if(semesterNo === "0"){ // Semester 10
-            return lva.slice(0,-2) + 4;
-        }else{
-            return lva.slice(0,-1) + semesterNo;
+        if(lva !== null){
+            let semesterNo = lva.slice(-1);
+            if(semesterNo >= 7){
+                return lva.slice(0,-1) + (semesterNo - 6);
+            }else if(semesterNo === "0"){ // Semester 10
+                return lva.slice(0,-2) + 4;
+            }else{
+                return lva.slice(0,-1) + semesterNo;
+            }
         }
     }
 };
@@ -175,10 +177,11 @@ class DataDummy extends DataBase{
 
         let DummyLobbie = [];
 
-        for(let i=0;i<15; i++){
+        for(let i=0;i<=20; i++){
+
 
             let LVA = {
-                "name": "LVA" + (1 + Math.round(Math.random()*10)),
+                "name": "LVA" + (i%10+1),//(1 + Math.round(Math.random()*10)),
                 "users": ((Math.round(Math.random()*3) < 2) ? Math.round(Math.random()*40) : 0)
             };
 

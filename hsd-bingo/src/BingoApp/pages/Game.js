@@ -23,6 +23,7 @@ class Game extends React.Component {
 
         this.state = {
             lobby: data.getLobby(),//Erst dummy schreiben
+            lobbyDisplayName: data.convertLVA(data.getLobby()),
             terms: data.getBoard(),
             active: [],
             currentTerm: null,
@@ -38,14 +39,15 @@ class Game extends React.Component {
             );
         }, checkInterval);
 
-        console.log("Constructor call");
+        //console.log("Constructor call");
     }
+
 
     //Check if somebody has won the game
     async checkBingo(){
         let winner = await data.bingo();
-        console.log("await Bingo: ");
-        console.log(winner);
+        //console.log("await Bingo: ");
+        //console.log(winner);
 
         //If there is a winner, call Page 4
         if(winner !== null && winner !== false){
@@ -146,10 +148,10 @@ class Game extends React.Component {
         <Grid divided='vertically'>
             <Grid.Row columns={2}>
                 <Grid.Column>
-                    <Header as='h1'>{data.convertLVA(this.state.lobby)}</Header>
+                    <Header as='h1'>{this.state.lobbyDisplayName}</Header>
                 </Grid.Column>
                 <Grid.Column>
-                    <Button color='red' floated='right' circular onClick={this.leaveGame}>Leave Game</Button>
+                    <Button color='red' floated='right' circular onClick={this.leaveGame}>Spiel verlassen</Button>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
