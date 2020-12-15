@@ -46,8 +46,8 @@ class End extends React.Component
     }
 
     //Get played subject. For example ISE1
-    async get_subject(){
-        let lobby_name = await data.getLobby();
+    get_subject(){
+        let lobby_name = data.getLobby();
 
         if(lobby_name === null){
             this.setState({error: true});
@@ -56,8 +56,8 @@ class End extends React.Component
         }
     }
 
-    async get_User(){
-        let userName = await data.getUser();
+    get_User(){
+        let userName = data.getUser();
         
         if(userName === null){
             this.setState({error: true});
@@ -67,8 +67,8 @@ class End extends React.Component
     }
 
     //Who won the game?
-    async get_Winner(){
-        let winner = await data.getWinner();
+    get_Winner(){
+        let winner = data.getWinner();
 
         if(winner === null){
             this.setState({error: true});
@@ -78,7 +78,8 @@ class End extends React.Component
     }
 
     //Back to Lobby Screen
-    play_again(){
+    async play_again(){
+        await data.joinLobby(this.state.subject, this.state.name);
         this.props.goToPage(1);
     }
 

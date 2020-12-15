@@ -16,7 +16,7 @@ class DataBase{
         this.userName = null;
         this.userID = null;
         this.winnerName = null;
-        this.master = null;
+        this.master = "true";
     }
 
     // wrapper for server communication
