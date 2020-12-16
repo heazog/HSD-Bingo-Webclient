@@ -26,12 +26,17 @@ class Lobby extends Component {
             started: false
         };
 
+        this.checkLobbyStatus = this.checkLobbyStatus.bind(this);
         this.loadPlayers = this.loadPlayers.bind(this);
+        this.loadUser = this.loadUser.bind(this);
+        this.loadLobby = this.loadLobby.bind(this);
         this.toggleReady = this.toggleReady.bind(this);
         this.leaveLobby = this.leaveLobby.bind(this);
         this.printReady = this.printReady.bind(this);
         this.printOwnName = this.printOwnName.bind(this);
         this.renderLoadMessage = this.renderLoadMessage.bind(this);
+        this.TablePlayerLobby = this.TablePlayerLobby.bind(this);
+        this.GridHeader = this.GridHeader.bind(this);
 
         // call async function to check if game started
         this.checkLobbyStatusPoll = setInterval(() => {
