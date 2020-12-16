@@ -310,9 +310,9 @@ class DataDummy extends DataBase{
     async highscores(){
         await sleep(1000);
         return { 
-            "bestPlayers": [
-                {"Name": "Spieler 1", "Score": 5}, 
-                {"Name": "Spieler 2", "Score": 10}
+            "bestplayers": [
+                {"name": "Spieler 1", "score": 5}, 
+                {"name": "Spieler 2", "score": 10}
             ],
             "quickestLobbies": [
                 {"lobby": "ISE7", "gametime": 100},

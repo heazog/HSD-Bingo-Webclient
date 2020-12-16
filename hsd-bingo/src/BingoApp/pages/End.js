@@ -32,6 +32,8 @@ class End extends React.Component
             subject: "",
             name: "",
             name_winner: "",
+            highscore_player: [],
+            highscore_lva: [],
             error: false
         };
 
@@ -43,6 +45,7 @@ class End extends React.Component
         this.get_subject();
         this.get_User();
         this.get_Winner();
+        this.get_highscores();
     }
 
     //Get played subject. For example ISE1
@@ -75,6 +78,13 @@ class End extends React.Component
         }else{
             this.setState({name_winner: winner, error: false});
         }
+    }
+
+    //Get the all time best players
+    async get_highscores(){
+        let highscore = await data.highscores();
+
+        this.setState({highscore_player: highscore.bestplayers, highscore_lva: highscore.quickestlobbies});
     }
 
     //Back to Lobby Screen
@@ -120,66 +130,48 @@ class End extends React.Component
     
     //Statistics on who our all time best players are.
     Stats_best_list = () => (
-        <Table color={'teal'} key={'teal1'}>
+        <Table color={'teal'} key={'teal1'} unstackable celled>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell>Ewige Bestenliste</Table.HeaderCell>
+                    <Table.HeaderCell>Name</Table.HeaderCell>
+                    <Table.HeaderCell>Score</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
 
             <Table.Body>
-                <Table.Row>
-                    <Table.Cell>1. Reiter Misch</Table.Cell>
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>2. Fronz Sepp</Table.Cell>
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>3. Philip Mustang</Table.Cell>        
-                </Table.Row>
-                
-                <Table.Row>
-                    <Table.Cell>4. Falco</Table.Cell>        
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>5. Heinz Fischer</Table.Cell>        
-                </Table.Row>
+                {this.state.highscore_player.map((player, index) => { 
+                    return(
+                        <Table.Row key={index}>
+                            <Table.Cell>{player.name}</Table.Cell>
+                            <Table.Cell>{player.score}</Table.Cell>
+                        </Table.Row>
+                    )
+                    })
+                }
             </Table.Body>
         </Table>
     )
     
     //Statistics on what the fastest bingo times were.
     Stats_fastest_games = () => (
-        <Table color={'teal'} key={'teal2'}>
+        <Table color={'teal'} key={'teal2'} unstackable celled>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell>Schnellsten Spiele</Table.HeaderCell>
+                    <Table.HeaderCell>Lehrveranstaltung</Table.HeaderCell>
+                    <Table.HeaderCell>Spielzeit</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
 
             <Table.Body>
-                <Table.Row>
-                    <Table.Cell>ISE1: 00:04:23</Table.Cell>
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>DNÜ1: 59:59:59</Table.Cell>
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>RTO1: 01:47:11</Table.Cell>        
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>PRJ1: 00:00:00</Table.Cell>        
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>SYM1: 01:00:01</Table.Cell>        
-                </Table.Row>
+            {this.state.highscore_lva.map((time, index) => { 
+                    return(
+                        <Table.Row key={index}>
+                            <Table.Cell>{time.lobby}</Table.Cell>
+                            <Table.Cell>{time.gametime}</Table.Cell>
+                        </Table.Row>
+                    )
+                    })
+                }
             </Table.Body>
         </Table>
     )
