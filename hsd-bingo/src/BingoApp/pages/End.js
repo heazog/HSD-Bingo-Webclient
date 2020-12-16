@@ -109,7 +109,7 @@ class End extends React.Component
                     <Image centered src={logo} size='tiny' />
                 </Grid.Column>
                 <Grid.Column>
-                        <Header as='h1'>{this.state.subject}</Header>
+                        <Header as='h1'>{data.convertLVA(this.state.subject)}</Header>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
