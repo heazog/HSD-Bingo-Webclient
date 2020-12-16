@@ -259,7 +259,7 @@ class Lobby extends Component {
         <Grid divided='vertically'>
             <Grid.Row columns={2}>
                 <Grid.Column>
-                    <Header as='h1'>{this.state.lobby}</Header>
+                    <Header as='h1'>{data.convertLVA(this.state.lobby)}</Header>
                 </Grid.Column>
                 <Grid.Column>
                     <Button className="LobbyButton" color='red' floated='right' circular onClick={this.leaveLobby}>Zurück</Button>
