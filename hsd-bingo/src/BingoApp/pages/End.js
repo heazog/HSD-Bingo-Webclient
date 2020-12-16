@@ -1,6 +1,7 @@
 import React from 'react';
 import data from '../Data';
-import { Header, Button, Image, Table, Grid, Segment, Container} from 'semantic-ui-react';
+import { Header, Button, Image, Table, Grid, Container} from 'semantic-ui-react';
+import logo from "../../logo.png"
 
 /*  Konstanten für Gewinner oder Verlierer Screen*/
 const winner_links = [  'https://media2.giphy.com/media/l4hLwMmFVBOAKF3EI/giphy.gif',
@@ -102,17 +103,13 @@ class End extends React.Component
 /***********************************************************************************/
     //Creates Header for our Endpage. Inserts the played subject dynamicly
     Header_function = () => (
-        <Grid columns='equal' padded >
+        <Grid columns='equal' padded verticalAlign='middle'>
             <Grid.Row textAlign='center'>
-                <Grid.Column>
-                    <Segment color='teal' inverted>
-                        <Header as='h3'>HSD-BINGO</Header>
-                    </Segment>
+                <Grid.Column> 
+                    <Image centered src={logo} size='tiny' />
                 </Grid.Column>
                 <Grid.Column>
-                    <Segment color='teal' inverted>
-                        <Header as='h3'>{this.state.subject}</Header>
-                    </Segment>
+                        <Header as='h1'>ISE1{this.state.subject}</Header>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -139,22 +136,22 @@ class End extends React.Component
             </Table.Header>
 
             <Table.Body>
-                {this.state.highscore_player.map((player, index) => { 
+            {this.state.highscore_player.map((player, index) => { 
                     return(
                         <Table.Row key={index}>
                             <Table.Cell>{player.name}</Table.Cell>
                             <Table.Cell>{player.score}</Table.Cell>
                         </Table.Row>
                     )
-                    })
-                }
+                })
+            }
             </Table.Body>
         </Table>
     )
     
     //Statistics on what the fastest bingo times were.
     Stats_fastest_games = () => (
-        <Table color={'teal'} key={'teal2'} unstackable celled>
+        <Table color={'teal'} key={'teal2'} celled unstackable>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Lehrveranstaltung</Table.HeaderCell>
@@ -170,8 +167,8 @@ class End extends React.Component
                             <Table.Cell>{time.gametime}</Table.Cell>
                         </Table.Row>
                     )
-                    })
-                }
+                })
+            }
             </Table.Body>
         </Table>
     )
@@ -184,11 +181,7 @@ class End extends React.Component
                 <Grid.Column>
                     {this.Image_function_winner()}
                     {this.WinnerLable()}
-                    <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
-                    <Grid.Column>
-                        {this.Button_function()}  
-                    </Grid.Column>
-                </Grid.Row>
+                    {this.Button_function()}
                 </Grid.Column>
                 <Grid.Column>
                     {this.Stats_best_list()}
