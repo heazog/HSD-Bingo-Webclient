@@ -50,11 +50,6 @@ class App extends React.Component {
         // render App Cointainer with selected page
         return (
             <Container className="BingoApp">
-                <Button onClick={() => this.setPage(0)}>0</Button>
-                <Button onClick={() => this.setPage(1)}>1</Button>
-                <Button onClick={() => this.setPage(2)}>2</Button>
-                <Button onClick={() => this.setPage(3)}>3</Button>
-                <br/>
                 {page}                
             </Container>
           );
