@@ -314,7 +314,7 @@ class DataDummy extends DataBase{
                 {"name": "Spieler 1", "score": 5}, 
                 {"name": "Spieler 2", "score": 10}
             ],
-            "quickestLobbies": [
+            "quickestlobbies": [
                 {"lobby": "ISE7", "gametime": 100},
                 {"lobby": "ISE7", "gametime": 100}
             ]
