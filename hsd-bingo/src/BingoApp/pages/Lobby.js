@@ -23,13 +23,11 @@ class Lobby extends Component {
             ready: true,
             readyState: PlayerState.Waiting,
             players: [],
-            started: false,
-            error: false
+            started: false
         };
 
         this.loadPlayers = this.loadPlayers.bind(this);
         this.toggleReady = this.toggleReady.bind(this);
-        this.startGame = this.startGame.bind(this);
         this.leaveLobby = this.leaveLobby.bind(this);
         this.printReady = this.printReady.bind(this);
         this.printOwnName = this.printOwnName.bind(this);
@@ -51,6 +49,7 @@ class Lobby extends Component {
     }
 
     componentDidMount(){
+        // set mounted flag
         this.isMouted = true;
         // call function to load own name, id and master state
         this.loadUser();
@@ -59,19 +58,16 @@ class Lobby extends Component {
     }
 
     componentWillUnmount() {
+        // reset flag
         this.isMouted = false;
-    }
-
-    // notify server that ready button was pressed
-    async startGame(){
-        await data.start();
     }
 
     async checkLobbyStatus(){
         let ret = await data.getJoinedLobbyStatus();
         //console.log("await JoinedLobbyStatus");
         if(ret.gametime > 0 && this.state.started === false && this.isMouted === true){
-            // change screen to game
+            // set flag to print message
+            this.setState({started: true});
             // stop async functions
             clearInterval(this.checkLobbyStatusPoll);
             clearInterval(this.checkLobbyStatusPoll);
@@ -82,7 +78,6 @@ class Lobby extends Component {
                 ret = await data.requestBoard();
             }
             //change screen to game
-            this.setState({started: true, error: false});
             this.props.goToPage(2)
         }
     }
@@ -94,10 +89,8 @@ class Lobby extends Component {
 
         if(this.isMouted === true)
         {
-            if(players_list === null){
-                this.setState({error: true});
-            }else{
-                this.setState({players: players_list, error: false});
+            if(players_list !== null){
+                this.setState({players: players_list});
             }
         }
     }
@@ -108,10 +101,8 @@ class Lobby extends Component {
         //let userID = data.getUserID();
         let master = data.getMaster();
 
-        if(user === null){
-            this.setState({error: true});
-        }else{
-            this.setState({name: user, master: master, error: false});
+        if(user !== null && master !== null){
+            this.setState({name: user, master: master});
         }
     }
 
@@ -119,15 +110,13 @@ class Lobby extends Component {
     loadLobby(){
         let lobby = data.getLobby();
 
-        if(lobby === null){
-            this.setState({error: true});
-        }else{
-            this.setState({lobby: lobby, error: false});
+        if(lobby !== null){
+            this.setState({lobby: lobby});
         }
     }
 
     // function called by ready button to toggle ready state and notifys server
-    toggleReady() {
+    async toggleReady() {
         this.setState({ ready: !this.state.ready });
 
         //console.log("ready state is" + this.state.ready);
@@ -139,10 +128,11 @@ class Lobby extends Component {
             this.setState({readyState: PlayerState.Waiting});
         }
 
-        // notify server
-        this.startGame();
+        // notify server that ready button was pressed
+        await data.start();
     }
 
+    // Disconnect from Server and switch to first page
     async leaveLobby() {
         // stop async functions
         clearInterval(this.checkLobbyStatusPoll);
@@ -153,34 +143,7 @@ class Lobby extends Component {
         this.props.goToPage(0);
     }
 
-
-    // Grid to print crown if user is master
-    GridMaster = () => (
-        <Grid divided='vertically'>
-            <Grid.Row columns={2}>
-                <Grid.Column width={1}>
-                    <Icon color="yellow" name = "chess king" />
-                </Grid.Column>
-                <Grid.Column>
-                    {this.state.name}
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-    )
-
-
-    printOwnName(){
-        if(this.state.master === true) {
-            return(
-                this.GridMaster()
-            )
-        }else {
-            return(
-                this.state.name
-            )
-        }
-    }
-
+    // prints an icon acording to the state argument
     printReady(state){
         switch(state) {
             case PlayerState.Waiting:
@@ -206,23 +169,43 @@ class Lobby extends Component {
         }
     }
 
+    // returns own name in plane text or an grid with a crown
+    printOwnName(){
+        if(this.state.master === true) {
+            return(
+                <Grid divided='vertically'>
+                    <Grid.Row columns={2}>
+                        <Grid.Column width={1}>
+                            <Icon color="yellow" name = "chess king" />
+                        </Grid.Column>
+                        <Grid.Column>
+                            {this.state.name}
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            )
+        }else {
+            return(
+                this.state.name
+            )
+        }
+    }
+
+    // renders a "Spiel wird vorbereitet!" message if the started flag is set
     renderLoadMessage(){
         return (
-            <Grid centered padded>
-                <Grid.Column mobile={16} computer={8}>
-                    <Message icon hidden={!this.state.started}>
-                        <Icon name='circle notched' loading />
-                        <Message.Content>
-                            <Message.Header>Spiel wird vorbereitet!</Message.Header>
-                        </Message.Content>
-                    </Message>
-                </Grid.Column>
-            </Grid>
+            <Message icon hidden={!this.state.started}>
+                <Icon name='circle notched' loading />
+                <Message.Content>
+                    <Message.Header>Spiel wird vorbereitet!</Message.Header>
+                </Message.Content>
+            </Message>
         );
     }
 
+    // returns the dynamic table of the players in the lobby
     TablePlayerLobby = () => (
-        <Table unstackable celled>
+        <Table className="LobbyTable" unstackable celled>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>Spieler</Table.HeaderCell>
@@ -258,7 +241,7 @@ class Lobby extends Component {
             <Table.Footer fullWidth>
                 <Table.Row>
                     <Table.HeaderCell>
-                        <Button toggle active={this.state.readyState === PlayerState.Ready} onClick={this.toggleReady}>Bereit</Button>
+                        <Button className="LobbyButton" toggle active={this.state.readyState === PlayerState.Ready} onClick={this.toggleReady}>Bereit</Button>
                     </Table.HeaderCell>
                     <Table.HeaderCell />
                 </Table.Row>
@@ -266,6 +249,7 @@ class Lobby extends Component {
         </Table>
     )
 
+    // returns a grid with the headers: lobbyname and leavebutton
     GridHeader = () => (
         <Grid divided='vertically'>
             <Grid.Row columns={2}>
@@ -273,12 +257,13 @@ class Lobby extends Component {
                     <Header as='h1'>{this.state.lobby}</Header>
                 </Grid.Column>
                 <Grid.Column>
-                    <Button color='red' floated='right' circular onClick={this.leaveLobby}>Leave Lobby</Button>
+                    <Button className="LobbyButton" color='red' floated='right' circular onClick={this.leaveLobby}>Zurück</Button>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
     )
 
+    // renders the lobby
     render(){
         return (
             <Container className="Lobby">
