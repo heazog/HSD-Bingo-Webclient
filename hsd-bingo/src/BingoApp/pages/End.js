@@ -109,7 +109,7 @@ class End extends React.Component
                     <Image centered src={logo} size='tiny' />
                 </Grid.Column>
                 <Grid.Column>
-                        <Header as='h1'>ISE1{this.state.subject}</Header>
+                        <Header as='h1'>{this.state.subject}</Header>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
@@ -136,15 +136,15 @@ class End extends React.Component
             </Table.Header>
 
             <Table.Body>
-            {this.state.highscore_player.map((player, index) => { 
-                    return(
-                        <Table.Row key={index}>
-                            <Table.Cell>{player.name}</Table.Cell>
-                            <Table.Cell>{player.score}</Table.Cell>
-                        </Table.Row>
-                    )
-                })
-            }
+                {this.state.highscore_player.map((player, index) => { 
+                        return(
+                            <Table.Row key={index}>
+                                <Table.Cell>{player.name}</Table.Cell>
+                                <Table.Cell>{player.score}</Table.Cell>
+                            </Table.Row>
+                        )
+                    })
+                }
             </Table.Body>
         </Table>
     )
@@ -160,15 +160,24 @@ class End extends React.Component
             </Table.Header>
 
             <Table.Body>
-            {this.state.highscore_lva.map((time, index) => { 
-                    return(
-                        <Table.Row key={index}>
-                            <Table.Cell>{time.lobby}</Table.Cell>
-                            <Table.Cell>{time.gametime}</Table.Cell>
-                        </Table.Row>
-                    )
-                })
-            }
+                {this.state.highscore_lva.map((time, index) => { 
+                    var gametime = 0;
+                    var date = new Date(0);
+                    date.setSeconds(time.gametime); // specify value for SECONDS here
+                    if(date !== 0)
+                    {
+                        var timeString = date.toISOString().substr(11, 8);
+                        gametime = timeString 
+                    }
+
+                        return(
+                            <Table.Row key={index}>
+                                <Table.Cell>{time.lobby}</Table.Cell>
+                                <Table.Cell>{gametime}</Table.Cell>
+                            </Table.Row>
+                        )
+                    })
+                }
             </Table.Body>
         </Table>
     )
