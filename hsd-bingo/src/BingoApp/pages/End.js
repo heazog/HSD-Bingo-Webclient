@@ -184,7 +184,11 @@ class End extends React.Component
                 <Grid.Column>
                     {this.Image_function_winner()}
                     {this.WinnerLable()}
-                    {this.Button_function()} 
+                    <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                    <Grid.Column>
+                        {this.Button_function()}  
+                    </Grid.Column>
+                </Grid.Row>
                 </Grid.Column>
                 <Grid.Column>
                     {this.Stats_best_list()}
@@ -215,6 +219,12 @@ class End extends React.Component
                     {this.Stats_fastest_games()}  
                 </Grid.Column>
             </Grid.Row>
+
+            <Grid.Row columns={1} textAlign='center' only='tablet mobile'>
+                    <Grid.Column>
+                        {this.Button_function()}  
+                    </Grid.Column>
+                </Grid.Row>
         </Grid>
     )
     
